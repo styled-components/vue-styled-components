@@ -1,1 +1,3 @@
-export default tag => `${tag}_${Math.random().toString(36).substring(18)}`;
+import uuid from 'uuid/v4';
+
+export default tag => `${tag}_${uuid()}`;
