@@ -1,6 +1,6 @@
 # vue-styled-components
 
-> Visual primitives for the component age. A simple port for Vue of Max Stoibler styled-components 💅
+> Visual primitives for the component age. A simple port for Vue of [Max Stoiber](https://mxstbr.com/) styled-components 💅
 
 ## Simple Usage
 
