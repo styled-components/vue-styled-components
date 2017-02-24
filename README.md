@@ -2,11 +2,37 @@
 
 > Visual primitives for the component age. A simple port for Vue of Max Stoibler styled-components 💅
 
+## Simple Usage
+
+``` js
+  import styled from 'vue-styled-components';
+
+  const StyledButton = styled.button`
+    background: white;
+    color: #4fc08d;
+
+    font-size: 1em;
+    margin: 1em;
+    padding: 0.25em 1em;
+    border: 2px solid #4fc08d;
+    border-radius: 3px;
+  `;
+
+  // Local component registration (see https://vuejs.org/v2/guide/components.html#Local-Registration)
+  new Vue({
+    // ...
+    components {
+      // styled-button will only be available in parent's template
+      'styled-button': StyledButton
+    }
+  }
+```
+
 ## Build Setup
 
 ``` bash
 # install dependencies
-npm install
+yarn install
 
 # serve with hot reload at localhost:8080
 npm run dev
@@ -27,4 +53,8 @@ npm run e2e
 npm test
 ```
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+## License
+
+Licensed under the MIT License, Copyright © 2016 Glen Maddern and Maximilian Stoiber.
+
+See [LICENSE](./LICENSE) for more information.
