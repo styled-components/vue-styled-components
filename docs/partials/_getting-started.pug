@@ -1,0 +1,38 @@
+.grid__row
+  .grid__column
+    section.docs#getting-started
+      h1.typo__h1 Getting started
+      hr.typo__hr
+
+      .grid__row
+        .grid__column
+          h2.typo__h2 Installation
+          pre.language-bash
+            code.
+              npm install vue-styled-components --save
+
+        .grid__column
+          h2.typo__h2 Basic usage
+          pre.language-javascript
+            code.
+              import styled from 'vue-styled-components';
+
+              const StyledButton = styled.button`
+                background: white;
+                color: #4fc08d;
+
+                font-size: 1em;
+                margin: 1em;
+                padding: 0.25em 1em;
+                border: 2px solid #4fc08d;
+                border-radius: 3px;
+              `;
+
+              // Local component registration (see https://vuejs.org/v2/guide/components.html#Local-Registration)
+              new Vue({
+                // ...
+                components {
+                  // styled-button will only be available in parent's template
+                  'styled-button': StyledButton
+                }
+              }

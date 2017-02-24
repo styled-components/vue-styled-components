@@ -1,0 +1,13 @@
+mixin nav-element(componentName, componentLink)
+  li.list__element
+    a.link.list__link(href= "#" + componentLink)= componentName
+
+ul.list(
+  :class="{ 'list--sticky': isNavSticky }"
+)
+  li.list__heading Setup
+  +nav-element('Getting Started', 'getting-started')
+
+  li.list__heading Examples
+  +nav-element('Simple', 'simple')
+  +nav-element('Extended', 'extended')

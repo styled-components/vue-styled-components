@@ -1,0 +1,39 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset='utf-8')
+    meta(name='viewportt', content='width=device-width,initial-scale=1,maximum-scale=1')
+    title vue-styled-components | A Vue.js library
+    link(rel='icon', href='static/vue-logo.png', type='image/x-icon')
+    meta(name='description', content='Visual primitives for the component age. A simple port for Vue of Max Stoibler styled-components 💅')
+    meta(property='og:title', content='vue-styled-components | A Vue.js library.')
+    meta(property='og:site_name', content='vue-styled-components | A Vue.js library.')
+    meta(property='og:url', content='http://liqueflies.github.io/vue-styled-components')
+    meta(property='og:description', content='Visual primitives for the component age. A simple port for Vue of Max Stoibler styled-components 💅')
+    meta(property='og:image', content='http://liqueflies.github.io/vue-styled-components/static/vue-styled-components.png')
+    meta(property='twitter:image', content='http://liqueflies.github.io/vue-styled-components/static/vue-styled-components.png')
+    meta(property='twitter:title', content='vue-styled-components | A Vue.js library.')
+    meta(property='twitter:description', content='Visual primitives for the component age. A simple port for Vue of Max Stoibler styled-components 💅')
+  body
+    #app
+      include ./partials/_start
+
+      .grid__row.docs
+        .grid__columns.grid__unit--sm-3.small--hidden
+          include ./partials/_nav
+        .grid__columns.grid__unit--sm-12.grid__unit--md-9
+          include ./partials/_getting-started
+
+          hr.typo__hr
+          h1.typo__h1 Examples
+
+          hr.typo__hr
+          include ./partials/examples/_simple
+
+          hr.typo__hr
+          include ./partials/examples/_extended
+
+
+      include ./partials/_footer
+
+    script(src='static/prism.js')

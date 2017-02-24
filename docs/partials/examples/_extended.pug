@@ -1,0 +1,32 @@
+h2.typo__h2#extended Extend styled-component
+p.typo__p
+  | Call styled as a function with Component to extends
+.grid__row
+
+  .grid__column.grid__unit--md-7
+    label.typo__label Code sample
+    pre.language-javascript
+      code.
+        import styled from 'vue-styled-components';
+
+        const HugeButton = styled(StyledButton)`
+          background: #4fc08d;
+          color: white;
+          font-size: 2em;
+          padding: 0.8em 2em;
+          border: 4px solid #4fc08d;
+        `;
+
+        // Local component registration (see https://vuejs.org/v2/guide/components.html#Local-Registration)
+        new Vue({
+          // ...
+          components: {
+            'huge-button': HugeButton,
+          },
+        }
+
+  .grid__column.grid__unit--md-5
+    label.typo__label Result
+    | Rendered result this code
+    div
+      #extend-example

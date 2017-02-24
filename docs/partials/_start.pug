@@ -1,0 +1,31 @@
+section.start(
+  :style="gradient"
+)
+  .center-vertically
+    h1.typo__h1
+      img.logo(src="./static/vue-styled-components.png")
+      | vue-styled-components
+      small.version 1.0.0
+    h3.typo__h3 
+      = ' for '
+      a.typo__link(href="http://vuejs.org" target="_BLANK") Vue.js
+
+    .grid__row.grid__row--centered
+      .grid__column.grid__unit--md-5.utils--center
+        p.typo__p
+          | Visual primitives for the component age.
+          br
+          | A simple port for Vue of 
+          a.typo__link(href="https://mxstbr.com/" target="_blank") Max Stoibler 
+          | styled-components 💅
+
+    .grid__row.grid__row--centered
+      .grid__column.grid__unit--md-6
+        .multiselect-example__container.utils--center
+          p.typo__p Utilising tagged template literals (a recent addition to JavaScript) and the power of CSS, vue-styled-components 
+           | allows you to write actual CSS code to style your components.
+
+    .grid__row.grid__row--centered
+      .grid__column.utils--center
+        a.button.button--large.button--secondary.button--github(href="https://github.com/liqueflies/vue-styled-components" target="_BLANK") View on GitHub
+        a.button.button--large(href="#getting-started") Getting started & examples
