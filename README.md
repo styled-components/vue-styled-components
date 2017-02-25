@@ -59,6 +59,6 @@ npm test
 
 ## License
 
-Licensed under the MIT License, Copyright © 2016 Glen Maddern and Maximilian Stoiber.
+Licensed under the MIT License, Copyright © 2017 Lorenzo Girardi.
 
 See [LICENSE](./LICENSE) for more information.

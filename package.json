@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Visual primitives for the component age. A simple port for Vue of Max Stoibler styled-components 💅",
   "author": "Lorenzo Girardi",
-  "private": true,
+  "main": "build/index.js",
   "scripts": {
     "dev": "node build/dev-server.js",
     "bundle": "webpack --config build/webpack.bundle.conf.js",
