@@ -1,9 +1,9 @@
 {
   "name": "vue-styled-components",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Visual primitives for the component age. A simple port for Vue of Max Stoibler styled-components 💅",
   "author": "Lorenzo Girardi",
-  "main": "build/index.js",
+  "main": "dist/vue-styled-components.min.js",
   "scripts": {
     "dev": "node build/dev-server.js",
     "bundle": "webpack --config build/webpack.bundle.conf.js",

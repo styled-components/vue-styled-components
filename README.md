@@ -4,6 +4,12 @@
 
 vue-styled-components creates smart and fast components with styles. CSS is autoprefixed!
 
+## 📦 Install 📦
+
+``` 
+yarn add vue-styled-components
+```
+
 ## 🚧 Caution 🚧
 
 > 🚨 Not yet ready for production, test aren't available atm. 🚨
