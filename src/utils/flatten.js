@@ -1,9 +1,15 @@
 import hyphenate from 'fbjs/lib/hyphenateStyleName';
 import isPlainObject from 'lodash/isPlainObject';
 
-export const objToCss = obj => (
-  Object.keys(obj).map(k => `${hyphenate(k)}: ${obj[k]};`).join(' ')
-);
+export const objToCss = (obj, prevKey) => {
+  const css = Object.keys(obj).map(key => {
+    if (isPlainObject(obj[key])) return objToCss(obj[key], key)
+    return `${hyphenate(key)}: ${obj[key]};`
+  }).join(' ')
+  return prevKey ? `${prevKey} {
+  ${css}
+}` : css
+};
 
 const flatten = (chunks, executionContext) => (
   chunks.reduce((array, chunk) => {
