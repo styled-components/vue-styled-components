@@ -1,5 +1,7 @@
 import Vue from 'vue';
+import parse from 'postcss-safe-parser';
 import insertCss from 'insert-css';
+import autoprefix from '../utils/autoprefix';
 
 export default (generateName) => {
   const createStyledComponent = (tagetEl, cssRules) => {
@@ -8,7 +10,10 @@ export default (generateName) => {
     }
 
     const componentName = generateName(tagetEl);
-    insertCss(`.${componentName} { ${cssRules.join('')} }`);
+    const flatCss = cssRules.join('').replace(/^\s*\/\/.*$/gm, ''); // replace js comments
+    const root = parse(`.${componentName} { ${flatCss} }`);
+    autoprefix(root);
+    insertCss(root.toResult().css);
 
     const StyledComponent = Vue.component(componentName, { /* eslint-disable object-shorthand */
       functional: true, /* eslint-disable func-names */
