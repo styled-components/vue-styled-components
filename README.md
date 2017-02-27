@@ -6,9 +6,9 @@ vue-styled-components creates smart and fast components with styles. CSS is auto
 
 ## 🚧 Caution 🚧
 
-### 🚨 Not yet ready for production, test aren't available atm. 🚨
+> 🚨 Not yet ready for production, test aren't available atm. 🚨
 
-## 👓 IMPORTANT 👓
+### 👓 IMPORTANT 👓
 
 > In Vue you must register components locally, so the following code is always required:
 
