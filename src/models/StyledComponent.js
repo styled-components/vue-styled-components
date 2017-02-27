@@ -5,7 +5,8 @@ import generateAlphabeticalName from '../utils/generateAlphabeticalName';
 export default (ComponentStyle) => {
   const createStyledComponent = (tagetEl, cssRules, props) => {
     if (tagetEl.prototype instanceof Vue) {
-      return createStyledComponent(tagetEl.tagName, tagetEl.cssRules.concat(cssRules), Object.assign({}, tagetEl.keepProps, props));
+      const mergedProps = Object.assign({}, tagetEl.keepProps, props);
+      return createStyledComponent(tagetEl.tagName, tagetEl.cssRules.concat(cssRules), mergedProps);
     }
 
     const componentName = generateAlphabeticalName(tagetEl);
@@ -26,14 +27,14 @@ export default (ComponentStyle) => {
         );
       },
       methods: {
-        generateAndInjectStyles(props) {
-          return componentStyle.generateAndInjectStyles(props);
+        generateAndInjectStyles(componentProps) {
+          return componentStyle.generateAndInjectStyles(componentProps);
         },
       },
       mounted() {
-        const props = Object.assign({}, this.$props);
-        this.generateAndInjectStyles(props);
-      }
+        const componentProps = Object.assign({}, this.$props);
+        this.generateAndInjectStyles(componentProps);
+      },
     });
 
     StyledComponent.tagName = tagetEl;

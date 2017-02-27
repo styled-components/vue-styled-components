@@ -1,5 +1,5 @@
 import parse from 'postcss-safe-parser';
-import postcssNested from 'postcss-nested'
+import postcssNested from 'postcss-nested';
 import insertCss from 'insert-css';
 
 import autoprefix from '../utils/autoprefix';
@@ -20,14 +20,14 @@ export default () => {
      * */
     generateAndInjectStyles(executionContext) {
       const flatCSS = flatten(this.rules, executionContext).join('')
-        .replace(/^\s*\/\/.*$/gm, '') // replace JS comments
+        .replace(/^\s*\/\/.*$/gm, ''); // replace JS comments
       const root = parse(`.${this.selector} { ${flatCSS} }`);
       postcssNested(root);
       autoprefix(root);
       insertCss(root.toResult().css);
       return this.selector;
     }
-  };
+  }
 
   return ComponentStyle;
 };

@@ -18,6 +18,7 @@
     "inline-style-prefixer": "^3.0.0",
     "insert-css": "^2.0.0",
     "lodash.isplainobject": "^4.0.6",
+    "postcss-nested": "^1.0.0",
     "postcss-safe-parser": "^2.0.0",
     "uuid": "^3.0.1",
     "vue": "^2.2.1"
