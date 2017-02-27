@@ -2,11 +2,29 @@
 
 > Visual primitives for the component age. A simple port for Vue of [Max   Stoiber](https://mxstbr.com/) styled-components 💅
 
-## Caution 🚧
+vue-styled-components creates smart and fast components with styles. CSS is autoprefixed!
 
-### Not yet ready for production, no-tests provided, not full featured
+## 🚧 Caution 🚧
 
-## Simple Usage
+### 🚨 Not yet ready for production, test aren't available atm. 🚨
+
+## 👓 IMPORTANT 👓
+
+> In Vue you must register components locally, so the following code is always required:
+
+```
+  // Local component registration (see https://vuejs.org/v2/guide/components.html#Local-Registration)
+  new Vue({
+    // ...
+    components {
+      // styled-button will only be available in parent's template
+      'styled-button': StyledButton
+    },
+    template: '<styled-button> Fancy Button </styled-button>'
+  }
+```
+
+## Basic Usage 👣
 
 ``` js
   import styled from 'vue-styled-components';
@@ -21,15 +39,40 @@
     border: 2px solid #4fc08d;
     border-radius: 3px;
   `;
+```
 
-  // Local component registration (see https://vuejs.org/v2/guide/components.html#Local-Registration)
-  new Vue({
-    // ...
-    components {
-      // styled-button will only be available in parent's template
-      'styled-button': StyledButton
-    }
-  }
+## Advanced Usage 👡
+
+
+``` js
+  import styled from 'vue-styled-components';
+  import StyledButton from './StyledButton';
+
+  const HugeStyledButton = styled(StyledButton)`
+    font-size: 2em;
+    padding: 0.85em 2em;
+    border: 4px solid #4fc08d;
+  `;
+```
+
+## Expert Usage 👠
+
+``` js
+  import styled from 'vue-styled-components';
+
+  // Vue need to specify also props we will use
+  const modalProps = { isOpen: Boolean };
+
+  const Modal = styled('div', modalProps)`
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1024;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: ${props => props.isOpen : 'block' : 'none'}
+  `;
 ```
 
 ## Build Setup
