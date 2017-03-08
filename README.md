@@ -77,7 +77,7 @@ yarn add vue-styled-components
     bottom: 0;
     z-index: 1024;
     background-color: rgba(0, 0, 0, 0.75);
-    display: ${props => props.isOpen : 'block' : 'none'}
+    display: ${props => props.isOpen ? 'block' : 'none'}
   `;
 ```
 
