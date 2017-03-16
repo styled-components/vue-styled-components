@@ -4,7 +4,7 @@ import domElements from '../utils/domElements'
 export default (createStyledComponent) => {
   const styled = (tagName, props = {}) =>
     (cssRules, ...interpolations) => (
-      createStyledComponent(tagName, css(cssRules, interpolations), props)
+      createStyledComponent(tagName, css(cssRules, ...interpolations), props)
     )
 
   domElements.forEach((domElement) => {
