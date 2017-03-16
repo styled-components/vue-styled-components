@@ -30,14 +30,17 @@ Utilising tagged template literals (a recent addition to JavaScript) and the pow
 
 ### Basic
 
-This creates two Vue components, `<Title>` and `<Wrapper>`:
+> Do not use built-in or reserved HTML elements as component id (title, button, input...).
+
+
+This creates two Vue components, `<StyledTitle>` and `<Wrapper>`:
 
 ```JS
 import styled from 'vue-styled-components';
 
-// Create a <Title> Vue component that renders an <h1> which is
+// Create a <StyledTitle> Vue component that renders an <h1> which is
 // centered, palevioletred and sized at 1.5em
-const Title = styled.h1`
+const StyledTitle = styled.h1`
   font-size: 1.5em;
   text-align: center;
   color: palevioletred;
@@ -56,7 +59,7 @@ You render them like so:
 ```JSX
 // Use them like any other Vue component – except they're styled!
 <Wrapper>
-  <Title>Hello World, this is my first styled component!</Title>
+  <StyledTitle>Hello World, this is my first styled component!</StyledTitle>
 </Wrapper>
 ```
 
@@ -67,8 +70,8 @@ Styled components pass on all their props. This is a styled `<input>`:
 ```JS
 import styled from 'vue-styled-components';
 
-// Create an <Input> component that'll render an <input> tag with some styles
-const Input = styled.input`
+// Create an <StyledInput> component that'll render an <input> tag with some styles
+const StyledInput = styled.input`
   font-size: 1.25em;
   padding: 0.5em;
   margin: 0.5em;
@@ -85,8 +88,8 @@ const Input = styled.input`
 You can just pass a `placeholder` prop into the `styled-component`. It will pass it on to the DOM node like any other Vue component:
 
 ```JSX
-// Render a styled input with a placeholder of "@mxstbr"
-<Input placeholder="@mxstbr" type="text" />
+// Render a styled input with a placeholder of "@liqueflies"
+<Input placeholder="@liqueflies" type="text" />
 ```
 ### Adapting based on props
 
@@ -110,7 +113,7 @@ import styled from 'vue-styled-components';
 
 const btnProps = { primary: Boolean };
 
-const Button = styled.default('button', btnProps)`
+const StyledButton = styled.default('button', btnProps)`
   font-size: 1em;
   margin: 1em;
   padding: 0.25em 1em;
@@ -120,22 +123,22 @@ const Button = styled.default('button', btnProps)`
   color: ${props => props.primary ? 'white' : 'palevioletred'};
 `;
 
-export default Button;
+export default StyledButton;
 ```
 
 ```JSX
-<Button>Normal</Button>
-<Button primary>Primary</Button>
+<StyledButton>Normal</StyledButton>
+<StyledButton primary>Primary</StyledButton>
 ```
 
 ### Overriding component styles
 
-Taking the `Button` component from above and removing the primary rules, this is what we're left with – just a normal button:
+Taking the `StyledButton` component from above and removing the primary rules, this is what we're left with – just a normal button:
 
 ```JSX
 import styled from 'vue-styled-components';
 
-const Button = styled.button`
+const StyledButton = styled.button`
   background: white;
   color: palevioletred;
   font-size: 1em;
@@ -145,7 +148,7 @@ const Button = styled.button`
   border-radius: 3px;
 `;
 
-export default Button;
+export default StyledButton;
 ```
 
 Let's say someplace else you want to use your button component, but just in this one case you want the color and border color to be `tomato` instead of `palevioletred`. Now you _could_ pass in an interpolated function and change them based on some props, but that's quite a lot of effort for overriding the styles once.
@@ -155,9 +158,9 @@ To do this in an easier way you can call `styled` as a function and pass in the 
 ```JSX
 // Tomatobutton.js
 
-import Button from './Button';
+import StyledButton from './StyledButton';
 
-const TomatoButton = styled(Button)`
+const TomatoButton = styled(StyledButton)`
   color: tomato;
   border-color: tomato;
 `;
@@ -165,7 +168,7 @@ const TomatoButton = styled(Button)`
 export default TomatoButton;
 ```
 
-### `injectGlobal`
+### injectGlobal
 
 A helper method to write global CSS. Does not return a component, adds the styles to the stylesheet directly.
 
