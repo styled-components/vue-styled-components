@@ -1,6 +1,6 @@
 export default (ComponentStyle) => {
   const createStyledComponent = (tagetEl, cssRules, props) => {
-    if (tagetEl.prototype instanceof Vue) {
+    if (tagetEl !== null && typeof targetEl === 'object') {
       const mergedProps = Object.assign({}, tagetEl.keepProps, props)
       return createStyledComponent(tagetEl.tagName, tagetEl.cssRules.concat(cssRules), mergedProps)
     }
