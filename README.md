@@ -1,6 +1,6 @@
 # vue-styled-components
 
-> Visual primitives for the component age. A simple port for Vue of [Max   Stoiber](https://mxstbr.com/) styled-components 💅
+> Visual primitives for the component age. A simple port of styled-components 💅 for Vue.
 
 vue-styled-components creates smart and fast components with styles. CSS is autoprefixed!
 
@@ -77,7 +77,7 @@ yarn add vue-styled-components
     bottom: 0;
     z-index: 1024;
     background-color: rgba(0, 0, 0, 0.75);
-    display: ${props => props.isOpen : 'block' : 'none'}
+    display: ${props => props.isOpen ? 'block' : 'none'}
   `;
 ```
 

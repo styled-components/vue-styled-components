@@ -1,5 +1,5 @@
-import parse from 'postcss-safe-parser'
-import postcssNested from 'postcss-nested'
+import parse from '../vendor/postcss-safe-parser/parse'
+import postcssNested from '../vendor/postcss-nested'
 import insertCss from 'insert-css'
 
 import autoprefix from '../utils/autoprefix'
