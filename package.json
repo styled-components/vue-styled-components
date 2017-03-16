@@ -41,9 +41,6 @@
     "postcss-nested": "^1.0.0",
     "postcss-safe-parser": "^2.0.0"
   },
-  "peerDependencies": {
-    "vue": "^2.0.0 || ^2.2.4"
-  },
   "devDependencies": {
     "babel-cli": "^6.18.0",
     "babel-core": "^6.21.0",

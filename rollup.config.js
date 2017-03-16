@@ -71,9 +71,7 @@ if (prod) plugins.push(uglify(), visualizer({ filename: './bundle-stats.html' })
 export default {
   entry: 'src/index.js',
   moduleName: 'styled',
-  external: ['vue'],
   exports: 'named',
   targets,
   plugins,
-  globals: { vue: 'Vue' },
 }
