@@ -1,15 +1,17 @@
-import parse from 'postcss-safe-parser';
-import postcssNested from 'postcss-nested';
-import insertCss from 'insert-css';
+import parse from '../vendor/postcss-safe-parser/parse'
+import postcssNested from '../vendor/postcss-nested'
+import insertCss from 'insert-css'
 
-import autoprefix from '../utils/autoprefix';
-import flatten from '../utils/flatten';
+import autoprefix from '../utils/autoprefix'
+import flatten from '../utils/flatten'
+import hashStr from '../vendor/hash'
 
-export default () => {
+export default (nameGenerator) => {
+  const inserted = {}
+
   class ComponentStyle {
-    constructor(rules, selector) {
-      this.rules = rules;
-      this.selector = selector;
+    constructor (rules) {
+      this.rules = rules
     }
 
     /*
@@ -18,16 +20,21 @@ export default () => {
      * Parses that with PostCSS then runs PostCSS-Nested on it
      * Returns the hash to be injected on render()
      * */
-    generateAndInjectStyles(executionContext) {
+    generateAndInjectStyles (executionContext) {
       const flatCSS = flatten(this.rules, executionContext).join('')
-        .replace(/^\s*\/\/.*$/gm, ''); // replace JS comments
-      const root = parse(`.${this.selector} { ${flatCSS} }`);
-      postcssNested(root);
-      autoprefix(root);
-      insertCss(root.toResult().css);
-      return this.selector;
+        .replace(/^\s*\/\/.*$/gm, '') // replace JS comments
+      const hash = hashStr(flatCSS)
+      if (!inserted[hash]) {
+        const selector = nameGenerator(hash)
+        inserted[hash] = selector
+        const root = parse(`.${selector} { ${flatCSS} }`)
+        postcssNested(root)
+        autoprefix(root)
+        insertCss(root.toResult().css)
+      }
+      return inserted[hash]
     }
   }
 
-  return ComponentStyle;
-};
+  return ComponentStyle
+}

@@ -1,7 +1,8 @@
 .DS_Store
+.vscode
 node_modules/
-dist/
+dist
+lib
 npm-debug.log
-test/unit/coverage
-test/e2e/reports
-selenium-debug.log
+npm-debug.log.*
+bundle-stats.html
