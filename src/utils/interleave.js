@@ -1,6 +1,8 @@
-export default (cssRules, interpolations) => (
+export default (
+  strings,
+  interpolations,
+) => (
   interpolations.reduce((array, interp, i) => (
-    // ['color:', 'red', ';']
-    array.concat(interp, cssRules[i + 1])
-  ), [cssRules[0]])
+    array.concat(interp, strings[i + 1])
+  ), [strings[0]])
 )

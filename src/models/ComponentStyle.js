@@ -4,7 +4,7 @@ import insertCss from 'insert-css'
 
 import autoprefix from '../utils/autoprefix'
 import flatten from '../utils/flatten'
-import hashStr from '../utils/hash';
+import hashStr from '../vendor/hash'
 
 export default (nameGenerator) => {
   const inserted = {}
