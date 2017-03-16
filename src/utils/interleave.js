@@ -3,4 +3,4 @@ export default (cssRules, interpolations) => (
     // ['color:', 'red', ';']
     array.concat(interp, cssRules[i + 1])
   ), [cssRules[0]])
-);
+)
