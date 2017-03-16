@@ -4,12 +4,14 @@ import insertCss from 'insert-css'
 
 import autoprefix from '../utils/autoprefix'
 import flatten from '../utils/flatten'
+import hashStr from '../utils/hash';
 
-export default () => {
+export default (nameGenerator) => {
+  const inserted = {}
+
   class ComponentStyle {
-    constructor (rules, selector) {
+    constructor (rules) {
       this.rules = rules
-      this.selector = selector
     }
 
     /*
@@ -21,11 +23,16 @@ export default () => {
     generateAndInjectStyles (executionContext) {
       const flatCSS = flatten(this.rules, executionContext).join('')
         .replace(/^\s*\/\/.*$/gm, '') // replace JS comments
-      const root = parse(`.${this.selector} { ${flatCSS} }`)
-      postcssNested(root)
-      autoprefix(root)
-      insertCss(root.toResult().css)
-      return this.selector
+      const hash = hashStr(flatCSS)
+      if (!inserted[hash]) {
+        const selector = nameGenerator(hash)
+        inserted[hash] = selector
+        const root = parse(`.${selector} { ${flatCSS} }`)
+        postcssNested(root)
+        autoprefix(root)
+        insertCss(root.toResult().css)
+      }
+      return inserted[hash]
     }
   }
 

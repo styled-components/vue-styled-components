@@ -11,6 +11,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.min.js"></script>
     <script src="/vue-styled-components.js"></script>
     <script type="text/babel">
+    // Create a global style
+    styled.injectGlobal`
+      body {
+        background-color: #fefefe;
+      }
+    `;
+
     // Create a <CustomTitle> vue component that renders an <h1> which is
     // centered, palevioletred and sized at 1.5em
     const CustomTitle = styled.default.h1`
@@ -28,7 +35,7 @@
 
     new Vue({
       el: '#container',
-      template: '<wrapper><custom-title> Hello World, this is my first styled component! </custom-titlr></wrapper>',
+      template: '<wrapper><custom-title> Hello World, this is my first styled component! </custom-title></wrapper>',
       components: {
         'custom-title': CustomTitle,
         'wrapper': Wrapper,
