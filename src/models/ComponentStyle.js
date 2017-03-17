@@ -1,4 +1,4 @@
-import hashStr from '../vendor/glamor/lib/hash'
+import hashStr from 'glamor/lib/hash'
 import parse from '../vendor/postcss-safe-parser/parse'
 import postcssNested from '../vendor/postcss-nested'
 

@@ -35,7 +35,8 @@
   ],
   "dependencies": {
     "fbjs": "^0.8.9",
-    "inline-style-prefixer": "^3.0.0",
+    "glamor": "^2.20.24",
+    "inline-style-prefixer": "^2.0.5",
     "lodash.isplainobject": "^4.0.6",
     "postcss-nested": "^1.0.0",
     "postcss-safe-parser": "^2.0.0"
