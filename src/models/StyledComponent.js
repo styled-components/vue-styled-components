@@ -1,8 +1,8 @@
 export default (ComponentStyle) => {
-  const createStyledComponent = (tagetEl, cssRules, props) => {
-    if (tagetEl !== null && typeof targetEl === 'object') {
-      const mergedProps = Object.assign({}, tagetEl.keepProps, props)
-      return createStyledComponent(tagetEl.tagName, tagetEl.cssRules.concat(cssRules), mergedProps)
+  const createStyledComponent = (targetEl, cssRules, props) => {
+    if (targetEl !== null && typeof targetEl === 'object') {
+      const mergedProps = Object.assign({}, targetEl.keepProps, props)
+      return createStyledComponent(targetEl.tagName, targetEl.cssRules.concat(cssRules), mergedProps)
     }
 
     const componentStyle = new ComponentStyle(cssRules)
@@ -13,7 +13,7 @@ export default (ComponentStyle) => {
       }),
       render: function (createElement) {
         return createElement(
-          tagetEl,
+          targetEl,
           {
             class: [this.generatedClassName]
           },
@@ -31,7 +31,7 @@ export default (ComponentStyle) => {
       }
     }
 
-    StyledComponent.tagName = tagetEl
+    StyledComponent.tagName = targetEl
     StyledComponent.cssRules = cssRules
     StyledComponent.keepProps = props
 
