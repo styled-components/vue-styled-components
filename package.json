@@ -1,6 +1,6 @@
 {
   "name": "vue-styled-components",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "Visual primitives for the component age. A simple port of styled-components 💅 for Vue",
   "main": "lib/index.js",
   "module": "dist/vue-styled-components.es.js",
