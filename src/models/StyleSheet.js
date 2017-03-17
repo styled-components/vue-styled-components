@@ -3,8 +3,6 @@ to use. */
 import { StyleSheet as GlamorSheet } from '../vendor/glamor/sheet'
 
 class StyleSheet {
-  globalStyleSheet
-  componentStyleSheet
   constructor () {
     /* Don't specify a maxLength for the global sheet, since these rules
      * are defined at initialization and should remain static after that */

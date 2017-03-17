@@ -1,10 +1,13 @@
+import hashStr from '../vendor/glamor/lib/hash'
 import parse from '../vendor/postcss-safe-parser/parse'
 import postcssNested from '../vendor/postcss-nested'
-import insertCss from 'insert-css'
 
 import autoprefix from '../utils/autoprefix'
 import flatten from '../utils/flatten'
-import hashStr from '../vendor/hash'
+
+import styleSheet from './StyleSheet'
+
+// import hashStr from '../vendor/glamor/uti'
 
 export default (nameGenerator) => {
   const inserted = {}
@@ -12,6 +15,8 @@ export default (nameGenerator) => {
   class ComponentStyle {
     constructor (rules) {
       this.rules = rules
+      if (!styleSheet.injected) styleSheet.inject()
+      this.insertedRule = styleSheet.insert('')
     }
 
     /*
@@ -30,7 +35,7 @@ export default (nameGenerator) => {
         const root = parse(`.${selector} { ${flatCSS} }`)
         postcssNested(root)
         autoprefix(root)
-        insertCss(root.toResult().css)
+        this.insertedRule.appendRule(root.toResult().css)
       }
       return inserted[hash]
     }
