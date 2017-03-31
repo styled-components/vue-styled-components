@@ -2,6 +2,10 @@
 
 > Visual primitives for the component age. Use the best bits of ES6 and CSS to style your apps without stress 💅
 
+## Support
+
+> This version is compatible with Vue 2.x
+
 ``` 
 yarn add vue-styled-components
 ```
