@@ -1,10 +1,7 @@
-import parse from '../vendor/postcss-safe-parser/parse'
-import postcssNested from '../vendor/postcss-nested'
 
-import autoprefix from '../utils/autoprefix'
 import flatten from '../utils/flatten'
-
 import styleSheet from './StyleSheet'
+import stylis from 'stylis'
 
 export default class ComponentStyle {
 
@@ -15,13 +12,9 @@ export default class ComponentStyle {
 
   generateAndInject () {
     if (!styleSheet.injected) styleSheet.inject()
-    let flatCSS = flatten(this.rules).join('')
-    if (this.selector) {
-      flatCSS = `${this.selector} {${flatCSS}\n}`
-    }
-    const root = parse(flatCSS)
-    postcssNested(root)
-    autoprefix(root)
-    styleSheet.insert(root.toResult().css, { global: true })
+    const flatCSS = flatten(this.rules).join('')
+    const cssString = this.selector ? `${this.selector} { ${flatCSS} }` : flatCSS
+    const css = stylis('', cssString, false, false)
+    styleSheet.insert(css, {global: true})
   }
 }
