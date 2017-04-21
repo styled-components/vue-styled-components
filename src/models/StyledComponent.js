@@ -7,7 +7,7 @@ export default (ComponentStyle) => {
 
     const componentStyle = new ComponentStyle(rules)
     const ParentComponent = parent || {}
-    
+
     const StyledComponent = Object.assign({}, ParentComponent, {
       props,
       data: () => ({
