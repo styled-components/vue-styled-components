@@ -7,7 +7,7 @@ import { expectCSSMatches, resetStyled } from '../../test/utils'
 
 let styled = resetStyled()
 const rule1 = 'width: 100%;'
-const rule2 = 'text-decoration: none;'
+const rule2 = 'margin: 0;'
 const rule3 = 'color: blue;'
 
 describe('injectGlobal', () => {
@@ -37,12 +37,8 @@ describe('injectGlobal', () => {
       }
     `
     expectCSSMatches(`
-      html {
-        ${rule1}
-      }
-      a {
-        ${rule2}
-      }
+      html {${rule1}}
+      a {${rule2}}
     `, { styleSheet })
   })
 
@@ -59,15 +55,11 @@ describe('injectGlobal', () => {
     `
     // Test the component sheet
     expectCSSMatches(`
-      .a {
-        ${rule3}
-      }
+      .a {${rule3}}
     `, { styleSheet: styleSheet.componentStyleSheet })
     // Test the global sheet
     expectCSSMatches(`
-      html {
-        ${rule1}
-      }
+      html {${rule1}}
     `, { styleSheet: styleSheet.globalStyleSheet })
   })
 });

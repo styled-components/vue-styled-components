@@ -3,6 +3,7 @@ import Vue from 'vue';
 import { resetStyled, expectCSSMatches } from './utils'
 
 let styled
+const stripLineBreaks = (str) => str.split('\n').map(l => l.trim()).join('')
 
 describe('css features', () => {
   beforeEach(() => {
@@ -14,7 +15,7 @@ describe('css features', () => {
       transition: opacity 0.3s;
     `
     const vm = new Vue(Comp).$mount()
-    expectCSSMatches('.a { transition: opacity 0.3s; -webkit-transition: opacity 0.3s; }')
+    expectCSSMatches('.a {-webkit-transition: opacity 0.3s;transition: opacity 0.3s;}')
   })
 
   it('should add vendor prefixes for display', () => {
@@ -24,24 +25,21 @@ describe('css features', () => {
       align-items: center;
     `
     const vm = new Vue(Comp).$mount()
-    expectCSSMatches(`
+    expectCSSMatches(stripLineBreaks(`
       .a {
         display: -webkit-box;
-        display: -moz-box;
-        display: -ms-flexbox;
         display: -webkit-flex;
+        display: -ms-flexbox;
         display: flex;
-        flex-direction: column;
-        -webkit-box-direction: normal;
-        -webkit-box-orient: vertical;
-        -ms-flex-direction: column;
         -webkit-flex-direction: column;
-        align-items: center;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-align-items: center;
         -webkit-box-align: center;
         -ms-flex-align: center;
-        -webkit-align-items: center;
+        align-items: center;
       }
-    `)
+    `))
   })
 
   it('should handle CSS calc()', () => {
@@ -49,13 +47,7 @@ describe('css features', () => {
       margin-bottom: calc(15px - 0.5rem) !important;
     `
     const vm = new Vue(Comp).$mount()
-    expectCSSMatches(`
-      .a {
-        margin-bottom: -webkit-calc(15px - 0.5rem) !important;
-        margin-bottom: -moz-calc(15px - 0.5rem) !important;
-        margin-bottom: calc(15px - 0.5rem) !important;
-      }
-    `)
+    expectCSSMatches('.a {margin-bottom: calc(15px - 0.5rem) !important;}')
   })
 
   it('should pass through custom properties', () => {
@@ -63,6 +55,6 @@ describe('css features', () => {
       --custom-prop: some-val;
     `
     const vm = new Vue(Comp).$mount()
-    expectCSSMatches('.a { --custom-prop: some-val; }')
+    expectCSSMatches('.a {--custom-prop: some-val;}')
   })
 })

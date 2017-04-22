@@ -18,7 +18,7 @@ describe('with styles', () => {
         ${rule}
       `
     const vm = new Vue(Comp).$mount()
-    expectCSSMatches('.a { color: blue; }')
+    expectCSSMatches('.a {color: blue;}')
   })
 
   it('should append multiple styles', () => {
@@ -29,7 +29,7 @@ describe('with styles', () => {
         ${rule2}
       `
     const vm = new Vue(Comp).$mount()
-    expectCSSMatches('.a { color: blue; background: red; }')
+    expectCSSMatches('.a {color: blue;background: red;}')
   })
 
   it('should handle inline style objects', () => {
@@ -40,7 +40,7 @@ describe('with styles', () => {
         ${rule1}
       `
     const vm = new Vue(Comp).$mount()
-    expectCSSMatches('.a { background-color: blue; }')
+    expectCSSMatches('.a {background-color: blue;}')
   })
 
   it('should handle inline style objects with media queries', () => {
@@ -54,7 +54,7 @@ describe('with styles', () => {
         ${rule1}
       `
     const vm = new Vue(Comp).$mount()
-    expectCSSMatches('.a { background-color: blue; } @media screen and (min-width: 250px) { .a { background-color: red; } }')
+    expectCSSMatches('.a {background-color: blue;}@media screen and (min-width: 250px) {.a {background-color: red;}}')
   })
 
   it('should handle inline style objects with pseudo selectors', () => {
@@ -68,7 +68,7 @@ describe('with styles', () => {
       ${rule1}
     `
     const vm = new Vue(Comp).$mount()
-    expectCSSMatches('.a { background-color: blue; } .a:hover { text-decoration: underline; }')
+    expectCSSMatches('.a {background-color: blue;}.a:hover {-webkit-text-decoration: underline;text-decoration: underline;}')
   })
 
   it('should handle inline style objects with pseudo selectors', () => {
@@ -82,7 +82,7 @@ describe('with styles', () => {
       ${rule1}
     `
     const vm = new Vue(Comp).$mount()
-    expectCSSMatches('.a { background-color: blue; } .a:hover { text-decoration: underline; }')
+    expectCSSMatches('.a {background-color: blue;}.a:hover {-webkit-text-decoration: underline;text-decoration: underline;}')
   })
 
   it('should handle inline style objects with nesting', () => {
@@ -96,7 +96,7 @@ describe('with styles', () => {
       ${rule1}
     `
     const vm = new Vue(Comp).$mount()
-    expectCSSMatches('.a { background-color: blue; } .a > h1 { color: white; }')
+    expectCSSMatches('.a {background-color: blue;}.a > h1 {color: white;}')
   })
 
   it('should handle inline style objects with contextual selectors', () => {
@@ -110,7 +110,7 @@ describe('with styles', () => {
       ${rule1}
     `
     const vm = new Vue(Comp).$mount()
-    expectCSSMatches('.a { background-color: blue; } html.something .a { color: white; }')
+    expectCSSMatches('.a {background-color: blue;}html.something .a {color: white;}')
   })
 
   it('should inject styles of multiple components', () => {
@@ -122,11 +122,11 @@ describe('with styles', () => {
     const SecondComp = styled.div`
         ${secondRule}
       `
-      
+
     const vm1 = new Vue(FirstComp).$mount()
     const vm2 = new Vue(SecondComp).$mount()
 
-    expectCSSMatches('.a { background: blue; } .b { background: red; }')
+    expectCSSMatches('.a {background: blue;} .b {background: red;}')
   })
 
   it('should inject styles of multiple components based on creation, not rendering order', () => {
@@ -145,8 +145,8 @@ describe('with styles', () => {
 
     // Classes _do_ get generated in the order of rendering but that's ok
     expectCSSMatches(`
-        .b { content: "first rule"; }
-        .a { content: "second rule"; }
+        .b {content: "first rule";}
+        .a {content: "second rule";}
       `)
   })
 
@@ -159,9 +159,7 @@ describe('with styles', () => {
       `
     const vm = new Vue(Comp).$mount()
     expectCSSMatches(`
-        .a {
-          color: blue;
-        }
+        .a {color: blue;}
       `)
   })
 })
