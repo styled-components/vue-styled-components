@@ -10,9 +10,7 @@ export default (ComponentStyle) => {
 
     const StyledComponent = Object.assign({}, ParentComponent, {
       props,
-      data: () => ({
-        generatedClassName: ''
-      }),
+      // functional: true,
       render: function (createElement) {
         return createElement(
           target,
@@ -27,10 +25,16 @@ export default (ComponentStyle) => {
           return componentStyle.generateAndInjectStyles(componentProps)
         }
       },
-      mounted () {
-        const componentProps = Object.assign({}, this.$props)
-        this.generatedClassName = this.generateAndInjectStyles(componentProps)
+      computed: {
+        generatedClassName () {
+          const componentProps = Object.assign({}, this.$props)
+          return this.generateAndInjectStyles(componentProps)
+        }
       }
+      // mounted () {
+      //   const componentProps = Object.assign({}, this.$props)
+      //   this.generatedClassName = this.generateAndInjectStyles(componentProps)
+      // }
     })
 
     StyledComponent.displayName = target
