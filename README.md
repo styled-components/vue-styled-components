@@ -113,7 +113,7 @@ import styled from 'vue-styled-components';
 
 const btnProps = { primary: Boolean };
 
-const StyledButton = styled.default('button', btnProps)`
+const StyledButton = styled('button', btnProps)`
   font-size: 1em;
   margin: 1em;
   padding: 0.25em 1em;
