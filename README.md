@@ -151,6 +151,29 @@ const StyledButton = styled.button`
 export default StyledButton;
 ```
 
+### Style router-link
+
+You can style also Vue component constructors as `router-link` from `vue-router` and other components
+
+```JSX
+import styled from 'vue-styled-components';
+
+// unfortunately you can't import directly router-link, you have to retrieve contstructor
+const RouterLink = Vue.component('router-link')
+
+const StyledLink = styled(RouterLink)`
+  color: palevioletred;
+  font-size: 1em;
+  text-decoration: none;
+`;
+
+export default StyledButton;
+```
+
+```JSX
+<StyledLink to="/">Custom Router Link</StyledLink>
+```
+
 Let's say someplace else you want to use your button component, but just in this one case you want the color and border color to be `tomato` instead of `palevioletred`. Now you _could_ pass in an interpolated function and change them based on some props, but that's quite a lot of effort for overriding the styles once.
 
 To do this in an easier way you can call `styled` as a function and pass in the previous component. You style that like any other styled-component. It overrides duplicate styles from the initial component and keeps the others around:
