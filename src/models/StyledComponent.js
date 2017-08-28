@@ -30,7 +30,6 @@ export default (ComponentStyle) => {
         }
       },
       mounted () {
-        console.log(this.$props)
         const componentProps = Object.assign({}, this.$props)
         this.generatedClassName = this.generateAndInjectStyles(componentProps)
       }
