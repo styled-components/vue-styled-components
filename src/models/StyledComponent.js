@@ -1,19 +1,14 @@
 export default (ComponentStyle) => {
-  const createStyledComponent = (target, rules, props, parent) => {
-    const componentStyle = new ComponentStyle(rules)
-    const ParentComponent = parent || {}
-
+  const createStyledComponent = (target, rules, props) => {
     const prevProps = target && typeof target !== 'string'
       ? (typeof target === 'object' ? target.props : (typeof target === 'function' ? target.options.props : {}))
       : {}
     const mergedProps = Object.assign({}, prevProps, props)
 
-    const StyledComponent = Object.assign({}, {
-      extends: ParentComponent,
+    const componentStyle = new ComponentStyle(rules)
+
+    const StyledComponent = {
       props: mergedProps,
-      data: () => ({
-        generatedClassName: ''
-      }),
       render: function (createElement) {
         return createElement(
           target,
@@ -29,11 +24,13 @@ export default (ComponentStyle) => {
           return componentStyle.generateAndInjectStyles(componentProps)
         }
       },
-      mounted () {
-        const componentProps = Object.assign({}, this.$props)
-        this.generatedClassName = this.generateAndInjectStyles(componentProps)
+      computed: {
+        generatedClassName () {
+          const componentProps = Object.assign({}, this.$props)
+          return this.generateAndInjectStyles(componentProps)
+        }
       }
-    })
+    }
 
     return StyledComponent
   }

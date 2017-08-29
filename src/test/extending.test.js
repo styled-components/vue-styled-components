@@ -45,13 +45,13 @@ describe('extending', () => {
     expectCSSMatches('.a {color: blue;}')
   })
 
-  it('should generate a class for the child with the rules of the parent', () => {
-    const Parent = styled.div`color: blue;`
+  it('should generate a new class for the child with the added rules', () => {
+    const Parent = styled.div`background-color: blue;`
     const Child = styled(Parent)`color: red;`
 
     const c = new Vue(Child).$mount()
 
-    expectCSSMatches('.a {color: blue;color: red;}')
+    expectCSSMatches('.a {color: red;}')
   })
 
   it('should generate different classes for both parent and child', () => {
@@ -61,10 +61,10 @@ describe('extending', () => {
     const p = new Vue(Parent).$mount()
     const c = new Vue(Child).$mount()
 
-    expectCSSMatches('.a {color: blue;} .b {color: blue;color: red;}')
+    expectCSSMatches('.a {color: blue;} .b {color: red;}')
   })
 
-  it('should copy nested rules to the child', () => {
+  it('should keep nested rules to the child', () => {
     const Parent = styled.div`
       color: blue;
       > h1 { font-size: 4rem; }
@@ -74,7 +74,7 @@ describe('extending', () => {
     const p = new Vue(Parent).$mount()
     const c = new Vue(Child).$mount()
 
-    expectCSSMatches('.a {color: blue;}.a > h1 {font-size: 4rem;} .b {color: blue;}.b > h1 {font-size: 4rem;}.b {color: red;}')
+    expectCSSMatches('.a {color: blue;}.a > h1 {font-size: 4rem;} .b {color: red;}')
   })
 
   it('should keep default props from parent', () => {
@@ -96,7 +96,7 @@ describe('extending', () => {
 
     expectCSSMatches(`
       .a {color: red;}
-      .b {color: red;background-color: green;}
+      .b {background-color: green;}
     `)
   })
 
@@ -119,25 +119,25 @@ describe('extending', () => {
     expect(c.$props).toEqual(p.$props)
   })
 
-  it('should keep custom static member from parent', () => {
-    const Parent = styled.div`color: red;`
+  // it('should keep custom static member from parent', () => {
+  //   const Parent = styled.div`color: red;`
 
-    Parent.fetchData = () => 1
+  //   Parent.fetchData = () => 1
 
-    const Child = styled(Parent)`color: green;`
+  //   const Child = styled(Parent)`color: green;`
 
-    expect(Child.fetchData).toExist()
-    expect(Child.fetchData()).toEqual(1)
-  })
+  //   expect(Child.fetchData).toExist()
+  //   expect(Child.fetchData()).toEqual(1)
+  // })
 
-  it('should keep static member in triple inheritance', () => {
-    const GrandParent = styled.div`color: red;`
-    GrandParent.fetchData = () => 1
+  // it('should keep static member in triple inheritance', () => {
+  //   const GrandParent = styled.div`color: red;`
+  //   GrandParent.fetchData = () => 1
 
-    const Parent = styled(GrandParent)`color: red;`
-    const Child = styled(Parent)`color:red;`
+  //   const Parent = styled(GrandParent)`color: red;`
+  //   const Child = styled(Parent)`color:red;`
 
-    expect(Child.fetchData).toExist()
-    expect(Child.fetchData()).toEqual(1)
-  })
+  //   expect(Child.fetchData).toExist()
+  //   expect(Child.fetchData()).toEqual(1)
+  // })
 })

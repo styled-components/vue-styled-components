@@ -151,7 +151,7 @@ const StyledButton = styled.button`
 export default StyledButton;
 ```
 
-### Style router-link
+### Style component constructors as `router-link`
 
 You can style also Vue component constructors as `router-link` from `vue-router` and other components
 
@@ -167,7 +167,7 @@ const StyledLink = styled(RouterLink)`
   text-decoration: none;
 `;
 
-export default StyledButton;
+export default StyledLink;
 ```
 
 ```JSX
