@@ -11,9 +11,6 @@ export default (ComponentStyle) => {
     const StyledComponent = Object.assign({}, {
       extends: ParentComponent,
       props: mergedProps,
-      data: () => ({
-        generatedClassName: ''
-      }),
       render: function (createElement) {
         return createElement(
           target,
@@ -29,9 +26,11 @@ export default (ComponentStyle) => {
           return componentStyle.generateAndInjectStyles(componentProps)
         }
       },
-      mounted () {
-        const componentProps = Object.assign({}, this.$props)
-        this.generatedClassName = this.generateAndInjectStyles(componentProps)
+      computed: {
+        generatedClassName () {
+          const componentProps = Object.assign({}, this.$props)
+          return this.generateAndInjectStyles(componentProps)
+        }
       }
     })
 
