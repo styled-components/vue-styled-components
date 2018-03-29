@@ -6,8 +6,13 @@
 
 > This version is compatible with Vue 2.x
 
+Installation:
 ``` 
+#yarn
 yarn add vue-styled-components
+
+#npm
+npm i vue-styled-components --save
 ```
 
 Utilising tagged template literals (a recent addition to JavaScript) and the power of CSS allows you to write actual CSS code to style your components. It also removes the mapping between components and styles – using components as a low-level styling construct could not be easier!
@@ -89,7 +94,7 @@ You can just pass a `placeholder` prop into the `styled-component`. It will pass
 
 ```JSX
 // Render a styled input with a placeholder of "@liqueflies"
-<Input placeholder="@liqueflies" type="text" />
+<input placeholder="@liqueflies" type="text" />
 ```
 ### Adapting based on props
 
