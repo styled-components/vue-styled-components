@@ -14,7 +14,18 @@ export default (ComponentStyle) => {
           target,
           {
             class: [this.generatedClassName],
-            props: this.$props
+            props: this.$props,
+            domProps: {
+              value: this.value
+            },
+            on: {
+              input: (event) => {
+                this.$emit('input', event.target.value)
+              },
+              click: (event) => {
+                this.$emit('click', event)
+              }
+            }
           },
           this.$slots.default
         )
