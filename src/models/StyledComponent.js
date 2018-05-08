@@ -21,6 +21,9 @@ export default (ComponentStyle) => {
             on: {
               input: (event) => {
                 this.$emit('input', event.target.value)
+              },
+              click: (event) => {
+                this.$emit('click', event)
               }
             }
           },
