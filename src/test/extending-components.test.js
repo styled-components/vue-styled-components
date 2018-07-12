@@ -5,7 +5,7 @@ import { resetStyled, expectCSSMatches } from './utils'
 
 let styled
 
-describe('extending', () => {
+describe('extending components', () => {
   /**
    * Make sure the setup is the same for every test
    */
