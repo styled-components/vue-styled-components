@@ -40,6 +40,9 @@ export default (ComponentStyle) => {
           const componentProps = Object.assign({}, this.$props)
           return this.generateAndInjectStyles(componentProps)
         }
+      },
+      withComponent(newTarget) {
+        return createStyledComponent(newTarget, rules, props);
       }
     }
 
