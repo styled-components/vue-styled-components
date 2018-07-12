@@ -41,6 +41,9 @@ export default (ComponentStyle) => {
           return this.generateAndInjectStyles(componentProps)
         }
       },
+      extend(extendedRules) {
+        return createStyledComponent(target, rules.slice().concat(extendedRules), props);
+      },
       withComponent(newTarget) {
         return createStyledComponent(newTarget, rules, props);
       }
