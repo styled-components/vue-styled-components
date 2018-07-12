@@ -176,19 +176,29 @@ export default StyledLink;
 
 Let's say someplace else you want to use your button component, but just in this one case you want the color and border color to be `tomato` instead of `palevioletred`. Now you _could_ pass in an interpolated function and change them based on some props, but that's quite a lot of effort for overriding the styles once.
 
-To do this in an easier way you can call `styled` as a function and pass in the previous component. You style that like any other styled-component. It overrides duplicate styles from the initial component and keeps the others around:
+To do this in an easier way you can call `StyledComponent.extend` as a function and pass in the extended style. It overrides duplicate styles from the initial component and keeps the others around:
 
 ```JSX
 // Tomatobutton.js
 
 import StyledButton from './StyledButton';
 
-const TomatoButton = styled(StyledButton)`
+const TomatoButton = StyledButton.extend`
   color: tomato;
   border-color: tomato;
 `;
 
 export default TomatoButton;
+```
+
+### withComponent
+Let's say you have a `button` and an `a` tag. You want them to share the exact same style. This is achievable with `.withComponent`.
+```JSX
+const Button = styled.button`
+  background: green;
+  color: white;
+`
+const Link = Button.withComponent('a')
 ```
 
 ### injectGlobal
