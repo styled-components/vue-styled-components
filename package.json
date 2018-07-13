@@ -50,6 +50,7 @@
     "babel-plugin-transform-class-properties": "^6.19.0",
     "babel-plugin-transform-object-rest-spread": "^6.20.2",
     "babel-preset-latest": "^6.16.0",
+    "chai": "^4.1.2",
     "chokidar": "^1.6.1",
     "danger": "^0.7.5",
     "eslint": "^3.12.2",
