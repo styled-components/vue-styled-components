@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import { assert } from 'chai'
 
 import { resetStyled, expectCSSMatches } from './utils'
 
@@ -15,6 +16,9 @@ describe('extending styled', () => {
 
     const b = new Vue(Base).$mount()
     const e = new Vue(Extended).$mount()
+
+    assert(b._vnode.data.class[0] === 'a')
+    assert(e._vnode.data.class[0] === 'b')
 
     expectCSSMatches('.a {color: blue;} .b {color: blue;background: green;}')
   })
