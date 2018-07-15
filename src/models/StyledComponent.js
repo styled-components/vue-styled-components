@@ -20,6 +20,7 @@ export default (ComponentStyle) => {
             },
             on: {
               input: (event) => {
+                this.value = event.target.value
                 this.$emit('input', event.target.value)
               },
               click: (event) => {
