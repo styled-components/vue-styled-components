@@ -22,7 +22,7 @@ Utilising tagged template literals (a recent addition to JavaScript) and the pow
   new Vue({
     // ...
     components {
-      'my-component': MyComponent
+      'my-component': StyledTitle
     },
     template: '<my-component> Hello! </my-component>'
   }
