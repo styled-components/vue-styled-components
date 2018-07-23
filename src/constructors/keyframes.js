@@ -17,9 +17,7 @@ export default css => {
 
   const animation = makeAnimation(name, css)
 
-  //  if (!styleSheet.hasNameForId(id, name)) {
   StyleSheet.insert(animation)
-  //  }
 
   return name
 }
