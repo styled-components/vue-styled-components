@@ -15,6 +15,6 @@ export default class ComponentStyle {
     const flatCSS = flatten(this.rules).join('')
     const cssString = this.selector ? `${this.selector} { ${flatCSS} }` : flatCSS
     const css = stylis('', cssString, false, false)
-    styleSheet.insert(css, {global: true})
+    styleSheet.insert(css, { global: true })
   }
 }
