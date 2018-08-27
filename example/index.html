@@ -18,12 +18,24 @@
       }
     `;
 
+
+    const animation = styled.keyframes`
+        from {
+          transform: rotate(0deg);
+        }
+
+        to {
+          transform: rotate(360deg);
+        }
+      `;
+
     // Create a <CustomTitle> vue component that renders an <h1> which is
     // centered, palevioletred and sized at 1.5em
     const CustomTitle = styled.default.h1`
       font-size: 1.5em;
       text-align: center;
       color: palevioletred;
+      animation: ${animation} 2s linear infinite;
     `;
 
     // Create a <Wrapper> vue component that renders a <section> with
