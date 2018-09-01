@@ -1,29 +1,44 @@
 export default (ComponentStyle) => {
   const createStyledComponent = (target, rules, props) => {
-    const prevProps = target && typeof target !== 'string'
-      ? (typeof target === 'object' ? target.props : (typeof target === 'function' ? target.options.props : {}))
-      : {}
-    const mergedProps = Object.assign({}, prevProps, props)
+    const isValidTarget = target && typeof target !== 'string'
+    let prevProps = {}
 
+    if (isValidTarget) {
+      prevProps = typeof target === 'object' ? target.props : (typeof target === 'function' ? target.options.props : {})
+    }
+
+    const mergedProps = Object.assign({ value: {}}, prevProps, props)
     const componentStyle = new ComponentStyle(rules)
 
-    const StyledComponent = {
+    return {
       props: mergedProps,
-      render: function (createElement) {
+      data () {
+        return { localValue: this.value }
+      },
+      watch: {
+        value (newVal) {
+          this.localValue = newVal
+        },
+        localValue () {
+          this.$emit('input', this.localValue)
+        }
+      },
+      render (createElement) {
+        const self = this
         return createElement(
           target,
           {
-            class: [this.generatedClassName],
-            props: this.$props,
+            class: [self.generatedClassName],
+            props: self.$props,
             domProps: {
-              value: this.value
+              value: self.localValue
             },
             on: {
               input: (event) => {
-                this.$emit('input', event.target.value)
+                self.localValue = event.target.value
               },
               click: (event) => {
-                this.$emit('click', event)
+                self.$emit('click', event)
               }
             }
           },
@@ -41,16 +56,13 @@ export default (ComponentStyle) => {
           return this.generateAndInjectStyles(componentProps)
         }
       },
-      extend(extendedRules) {
-        return createStyledComponent(target, rules.slice().concat(extendedRules), props);
+      extend (extendedRules) {
+        return createStyledComponent(target, rules.slice().concat(extendedRules), props)
       },
-      withComponent(newTarget) {
-        return createStyledComponent(newTarget, rules, props);
+      withComponent (newTarget) {
+        return createStyledComponent(newTarget, rules, props)
       }
     }
-
-    return StyledComponent
   }
-
   return createStyledComponent
 }
