@@ -30,7 +30,7 @@ app.get('/with-perf.html', (req, res) => {
 })
 
 app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'))
+  res.sendFile(path.join(__dirname, req.originalUrl || 'index.html'))
 })
 
 app.listen(port, error => {
