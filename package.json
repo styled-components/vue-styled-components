@@ -75,7 +75,7 @@
     "rollup-plugin-uglify": "^1.0.1",
     "rollup-plugin-visualizer": "^0.9.0",
     "rollup-plugin-vue2": "^0.8.0",
-    "vue": "^2.2.4"
+    "vue": "^2.5.17"
   },
   "lint-staged": {
     "*.js": [
