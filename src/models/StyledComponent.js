@@ -46,21 +46,28 @@ export default (ComponentStyle) => {
         )
       },
       methods: {
-        generateAndInjectStyles (componentProps) {
-          return componentStyle.generateAndInjectStyles(componentProps)
+        generateAndInjectStyles (style, props) {
+          return style.generateAndInjectStyles(props)
         }
       },
       computed: {
         generatedClassName () {
           const componentProps = Object.assign({}, this.$props)
-          return this.generateAndInjectStyles(componentProps)
+          return this.generateAndInjectStyles(componentStyle, componentProps)
         }
       },
-      extend (extendedRules) {
-        return createStyledComponent(target, rules.slice().concat(extendedRules), props)
+      extend (...extendedRules) {
+        const extended = []
+
+        extendedRules[0].forEach((line, key) => {
+          extended.push(line)
+          extended.push(extendedRules[key + 1])
+        });
+
+        return createStyledComponent(target, rules.slice().concat(extended), mergedProps)
       },
       withComponent (newTarget) {
-        return createStyledComponent(newTarget, rules, props)
+        return createStyledComponent(newTarget, rules, mergedProps);
       }
     }
   }
