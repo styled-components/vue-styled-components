@@ -35,7 +35,9 @@ export default (ComponentStyle) => {
             },
             on: {
               input: (event) => {
-                self.localValue = event.target.value
+                if (event.target) {
+                  self.localValue = event.target.value
+                }
               },
               click: (event) => {
                 self.$emit('click', event)
@@ -62,12 +64,12 @@ export default (ComponentStyle) => {
         extendedRules[0].forEach((line, key) => {
           extended.push(line)
           extended.push(extendedRules[key + 1])
-        });
+        })
 
         return createStyledComponent(target, rules.slice().concat(extended), mergedProps)
       },
       withComponent (newTarget) {
-        return createStyledComponent(newTarget, rules, mergedProps);
+        return createStyledComponent(newTarget, rules, mergedProps)
       }
     }
   }
