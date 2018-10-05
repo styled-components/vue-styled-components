@@ -17,7 +17,19 @@ export default (ComponentStyle) => {
         const className = componentStyle.generateAndInjectStyles(props);
       
         if (context) {
-          return createElement(target, Object.assign(context, { class: className }), children);
+          return createElement(
+            target,
+            Object.assign(context, { 
+              class: className,
+              domProps: { value: data.model ? data.model.value : undefined },
+              on: {
+                input: function (event) {
+                  if (data.model) data.model.callback(event.target.value)
+                }
+              }
+            }),
+            children
+          );
         }
       },
       extend (...extendedRules) {
