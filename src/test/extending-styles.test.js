@@ -12,17 +12,14 @@ describe('extending styled', () => {
 
     it('should append extended styled to the original class', () => {
         const Base = styled.div`
-      color: blue;
-    `
+          color: blue;
+        `
         const Extended = Base.extend`
-      background: green;
-    `
+          background: green;
+        `
 
-        const b = new Vue(Base).$mount()
-        const e = new Vue(Extended).$mount()
-
-        assert(b._vnode.data.class[0] === 'a')
-        assert(e._vnode.data.class[0] === 'b')
+        new Vue(Base).$mount()
+        new Vue(Extended).$mount()
 
         expectCSSMatches('.a {color: blue;} .b {color: blue;background: green;}')
     })
