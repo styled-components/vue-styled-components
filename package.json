@@ -1,5 +1,5 @@
 {
-  "name": "vue-styled-components",
+  "name": "styled-components-vue",
   "version": "1.4.0",
   "description": "Visual primitives for the component age. A simple port of styled-components 💅 for Vue",
   "main": "lib/index.js",
@@ -34,7 +34,6 @@
     "css-in-js"
   ],
   "dependencies": {
-    "fbjs": "^0.8.9",
     "glamor": "^2.20.24",
     "inline-style-prefixer": "^2.0.5",
     "lodash.isplainobject": "^4.0.6",
@@ -65,18 +64,18 @@
     "mocha-jsdom": "^1.1.0",
     "node-watch": "^0.4.1",
     "pre-commit": "^1.2.2",
-    "rollup": "^0.37.0",
+    "rollup": "^0.65.0",
     "rollup-plugin-babel": "^2.7.1",
-    "rollup-plugin-commonjs": "^6.0.0",
-    "rollup-plugin-inject": "^2.0.0",
+    "rollup-plugin-commonjs": "^9.1.6",
+    "rollup-plugin-inject": "^2.2.0",
     "rollup-plugin-json": "^2.1.0",
     "rollup-plugin-node-builtins": "^2.1.0",
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-plugin-replace": "^1.1.1",
     "rollup-plugin-uglify": "^1.0.1",
-    "rollup-plugin-visualizer": "^0.1.5",
+    "rollup-plugin-visualizer": "^0.9.0",
     "rollup-plugin-vue2": "^0.8.0",
-    "vue": "^2.2.4"
+    "vue": "^2.5.17"
   },
   "lint-staged": {
     "*.js": [

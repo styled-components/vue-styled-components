@@ -1,56 +1,40 @@
 export default (ComponentStyle) => {
-  const createStyledComponent = (target, rules, props) => {
-    const prevProps = target && typeof target !== 'string'
-      ? (typeof target === 'object' ? target.props : (typeof target === 'function' ? target.options.props : {}))
-      : {}
-    const mergedProps = Object.assign({}, prevProps, props)
+  const createStyledComponent = (target, rules, styleProps) => {
+    const componentStyle = new ComponentStyle(rules);
 
-    const componentStyle = new ComponentStyle(rules)
+    return {
+      functional: true,
+      render (createElement, context) {
+        const { children, data } = context || {};
+        const props = Object.assign((data && data.attrs) ? data.attrs : {}, styleProps);
+        
+        Object.keys(props).forEach(index => {
+          if (typeof props[index] === 'function') {
+            props[index] = props[index](props);
+          }
+        });
 
-    const StyledComponent = {
-      props: mergedProps,
-      render: function (createElement) {
-        return createElement(
-          target,
-          {
-            class: [this.generatedClassName],
-            props: this.$props,
-            domProps: {
-              value: this.value
-            },
-            on: {
-              input: (event) => {
-                this.$emit('input', event.target.value)
-              },
-              click: (event) => {
-                this.$emit('click', event)
-              }
-            }
-          },
-          this.$slots.default
-        )
-      },
-      methods: {
-        generateAndInjectStyles (componentProps) {
-          return componentStyle.generateAndInjectStyles(componentProps)
+        const className = componentStyle.generateAndInjectStyles(props);
+      
+        if (context) {
+          return createElement(target, Object.assign(context, { class: className }), children);
         }
       },
-      computed: {
-        generatedClassName () {
-          const componentProps = Object.assign({}, this.$props)
-          return this.generateAndInjectStyles(componentProps)
-        }
+      extend (...extendedRules) {
+        const extended = []
+      
+        extendedRules[0].forEach((line, key) => {
+          extended.push(line)
+          extended.push(extendedRules[key + 1])
+        })
+      
+        return createStyledComponent(target, rules.slice().concat(extended), styleProps)
       },
-      extend(extendedRules) {
-        return createStyledComponent(target, rules.slice().concat(extendedRules), props);
+      withComponent (newTarget) {
+        return createStyledComponent(newTarget, rules, styleProps)
       },
-      withComponent(newTarget) {
-        return createStyledComponent(newTarget, rules, props);
-      }
+      target,
     }
-
-    return StyledComponent
   }
-
-  return createStyledComponent
+  return createStyledComponent;
 }
