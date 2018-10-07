@@ -7,7 +7,7 @@
 > This version is compatible with Vue 2.x
 
 ``` 
-yarn add vue-styled-components
+yarn add styled-components-vue
 ```
 
 Utilising tagged template literals (a recent addition to JavaScript) and the power of CSS allows you to write actual CSS code to style your components. It also removes the mapping between components and styles – using components as a low-level styling construct could not be easier!
