@@ -79,24 +79,21 @@ describe('extending components', () => {
 
   it('should keep default props from parent', () => {
     const parentProps = {
-      color: {
-        type: String,
-        default: 'red'
-      }
+      color: 'red'
     }
 
     const Parent = styled('div', parentProps)`
       color: ${(props) => props.color};
     `
 
-    const Child = styled(Parent)`background-color: green;`
+    const Child = Parent.extend`background-color: green;`
 
-    const p = new Vue(Parent).$mount()
-    const c = new Vue(Child).$mount()
+    new Vue(Parent).$mount()
+    new Vue(Child).$mount()
 
     expectCSSMatches(`
       .a {color: red;}
-      .b {background-color: green;}
+      .b {color: red;background-color: green;}
     `)
   })
 

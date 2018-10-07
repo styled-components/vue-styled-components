@@ -1,77 +1,52 @@
 export default (ComponentStyle) => {
-  const createStyledComponent = (target, rules, props) => {
-    const isValidTarget = target && typeof target !== 'string'
-    let prevProps = {}
-
-    if (isValidTarget) {
-      prevProps = typeof target === 'object' ? target.props : (typeof target === 'function' ? target.options.props : {})
-    }
-
-    const mergedProps = Object.assign({ value: {}}, prevProps, props)
-    const componentStyle = new ComponentStyle(rules)
+  const createStyledComponent = (target, rules, styleProps) => {
+    const componentStyle = new ComponentStyle(rules);
 
     return {
-      props: mergedProps,
-      data () {
-        return { localValue: this.value }
-      },
-      watch: {
-        value (newVal) {
-          this.localValue = newVal
-        },
-        localValue () {
-          this.$emit('input', this.localValue)
-        }
-      },
-      render (createElement) {
-        const self = this
-        return createElement(
-          target,
-          {
-            class: [self.generatedClassName],
-            props: self.$props,
-            domProps: {
-              value: self.localValue
-            },
-            on: {
-              input: (event) => {
-                if (event.target) {
-                  self.localValue = event.target.value
+      functional: true,
+      render (createElement, context) {
+        const { children, data } = context || {};
+        const props = Object.assign((data && data.attrs) ? data.attrs : {}, styleProps);
+        
+        Object.keys(props).forEach(index => {
+          if (typeof props[index] === 'function') {
+            props[index] = props[index](props);
+          }
+        });
+
+        const className = componentStyle.generateAndInjectStyles(props);
+      
+        if (context) {
+          return createElement(
+            target,
+            Object.assign(context, { 
+              class: className,
+              domProps: { value: data.model ? data.model.value : undefined },
+              on: {
+                input: function (event) {
+                  if (data.model) data.model.callback(event.target.value)
                 }
-              },
-              click: (event) => {
-                self.$emit('click', event)
               }
-            }
-          },
-          this.$slots.default
-        )
-      },
-      methods: {
-        generateAndInjectStyles (style, props) {
-          return style.generateAndInjectStyles(props)
-        }
-      },
-      computed: {
-        generatedClassName () {
-          const componentProps = Object.assign({}, this.$props)
-          return this.generateAndInjectStyles(componentStyle, componentProps)
+            }),
+            children
+          );
         }
       },
       extend (...extendedRules) {
         const extended = []
-
+      
         extendedRules[0].forEach((line, key) => {
           extended.push(line)
           extended.push(extendedRules[key + 1])
         })
-
-        return createStyledComponent(target, rules.slice().concat(extended), mergedProps)
+      
+        return createStyledComponent(target, rules.slice().concat(extended), styleProps)
       },
       withComponent (newTarget) {
-        return createStyledComponent(newTarget, rules, mergedProps)
-      }
+        return createStyledComponent(newTarget, rules, styleProps)
+      },
+      target,
     }
   }
-  return createStyledComponent
+  return createStyledComponent;
 }

@@ -17,7 +17,7 @@ describe('extending styled', () => {
     const o = new Vue(OldTarget).$mount()
     const n = new Vue(NewTarget).$mount()
 
-    assert(o._vnode.tag === 'div');
-    assert(n._vnode.tag === 'a');
+    assert(o.$options.target === 'div');
+    assert(n.$options.target === 'a');
   })
 })
