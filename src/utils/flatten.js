@@ -1,10 +1,10 @@
-import hyphenate from 'fbjs/lib/hyphenateStyleName'
 import isPlainObject from 'lodash.isplainobject'
+import hyphenateStyleName from './hyphenateStyleName'
 
 export const objToCss = (obj, prevKey) => {
   const css = Object.keys(obj).map(key => {
     if (isPlainObject(obj[key])) return objToCss(obj[key], key)
-    return `${hyphenate(key)}: ${obj[key]};`
+    return `${hyphenateStyleName(key)}: ${obj[key]};`
   }).join(' ')
   return prevKey ? `${prevKey} {
   ${css}
