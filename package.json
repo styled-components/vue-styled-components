@@ -34,7 +34,6 @@
     "css-in-js"
   ],
   "dependencies": {
-    "fbjs": "^0.8.9",
     "glamor": "^2.20.24",
     "inline-style-prefixer": "^2.0.5",
     "lodash.isplainobject": "^4.0.6",
