@@ -89,7 +89,7 @@ You can just pass a `placeholder` prop into the `styled-component`. It will pass
 
 ```JSX
 // Render a styled input with a placeholder of "@liqueflies"
-<Input placeholder="@liqueflies" type="text" />
+<StyledInput placeholder="@liqueflies" type="text" />
 ```
 ### Adapting based on props
 
