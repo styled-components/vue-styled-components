@@ -6,3 +6,4 @@ lib
 npm-debug.log
 npm-debug.log.*
 bundle-stats.html
+.idea
