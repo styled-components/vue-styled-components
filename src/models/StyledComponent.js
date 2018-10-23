@@ -10,6 +10,14 @@ export default (ComponentStyle) => {
     const StyledComponent = {
       props: mergedProps,
       render: function (createElement) {
+        const children = []
+        for (const slot in this.$slots) {
+          if (slot === 'default') {
+            children.push(this.$slots[slot])
+          } else {
+            children.push(createElement('template', { slot }, this.$slots[slot]))
+          }
+        }
         return createElement(
           target,
           {
@@ -25,9 +33,10 @@ export default (ComponentStyle) => {
               click: (event) => {
                 this.$emit('click', event)
               }
-            }
+            },
+            scopedSlots: this.$scopedSlots
           },
-          this.$slots.default
+          children
         )
       },
       methods: {
@@ -41,11 +50,11 @@ export default (ComponentStyle) => {
           return this.generateAndInjectStyles(componentProps)
         }
       },
-      extend(extendedRules) {
-        return createStyledComponent(target, rules.slice().concat(extendedRules), props);
+      extend (extendedRules) {
+        return createStyledComponent(target, rules.slice().concat(extendedRules), props)
       },
-      withComponent(newTarget) {
-        return createStyledComponent(newTarget, rules, props);
+      withComponent (newTarget) {
+        return createStyledComponent(newTarget, rules, props)
       }
     }
 
