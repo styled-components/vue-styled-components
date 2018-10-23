@@ -22,9 +22,9 @@ Utilising tagged template literals (a recent addition to JavaScript) and the pow
   new Vue({
     // ...
     components {
-      'my-component': MyComponent
+      'styled-title': StyledTitle
     },
-    template: '<my-component> Hello! </my-component>'
+    template: '<styled-title> Hello! </styled-title>'
   }
 ```
 
@@ -58,9 +58,9 @@ You render them like so:
 
 ```JSX
 // Use them like any other Vue component – except they're styled!
-<Wrapper>
-  <StyledTitle>Hello World, this is my first styled component!</StyledTitle>
-</Wrapper>
+<wrapper>
+  <styled-title>Hello World, this is my first styled component!</styled-title>
+</wrapper>
 ```
 
 ### Passed props
@@ -89,7 +89,7 @@ You can just pass a `placeholder` prop into the `styled-component`. It will pass
 
 ```JSX
 // Render a styled input with a placeholder of "@liqueflies"
-<Input placeholder="@liqueflies" type="text" />
+<styled-input placeholder="@liqueflies" type="text" />
 ```
 ### Adapting based on props
 
@@ -127,8 +127,8 @@ export default StyledButton;
 ```
 
 ```JSX
-<StyledButton>Normal</StyledButton>
-<StyledButton primary>Primary</StyledButton>
+<styled-button>Normal</styled-button>
+<styled-button primary>Primary</styled-button>
 ```
 
 ### Overriding component styles
@@ -171,7 +171,7 @@ export default StyledLink;
 ```
 
 ```JSX
-<StyledLink to="/">Custom Router Link</StyledLink>
+<styled-link to="/">Custom Router Link</styled-link>
 ```
 
 Let's say someplace else you want to use your button component, but just in this one case you want the color and border color to be `tomato` instead of `palevioletred`. Now you _could_ pass in an interpolated function and change them based on some props, but that's quite a lot of effort for overriding the styles once.
