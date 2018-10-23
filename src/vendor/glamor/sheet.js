@@ -36,9 +36,9 @@ function sheetForTag(tag) {
   }
 }
 
-const isBrowser = typeof document !== 'undefined'
 const isDev = (x => (x === 'development') || !x)(process.env.NODE_ENV)
 const isTest = process.env.NODE_ENV === 'test'
+const isBrowser = typeof document !== 'undefined' && !isTest
 
 const oldIE = (() => {
   if(isBrowser) {
