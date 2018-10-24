@@ -8,6 +8,11 @@ export default (ComponentStyle) => {
     const componentStyle = new ComponentStyle(rules)
 
     const StyledComponent = {
+      inject: {
+        theme: {
+          default: {}
+        }
+      },
       props: mergedProps,
       render: function (createElement) {
         const children = []
@@ -18,6 +23,7 @@ export default (ComponentStyle) => {
             children.push(createElement('template', { slot }, this.$slots[slot]))
           }
         }
+
         return createElement(
           target,
           {
@@ -46,7 +52,7 @@ export default (ComponentStyle) => {
       },
       computed: {
         generatedClassName () {
-          const componentProps = Object.assign({}, this.$props)
+          const componentProps = Object.assign({ theme: this.theme }, this.$props)
           return this.generateAndInjectStyles(componentProps)
         }
       },
