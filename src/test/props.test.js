@@ -1,6 +1,7 @@
 import Vue from 'vue'
 
 import { resetStyled, expectCSSMatches } from './utils'
+import ThemeProvider from "../providers/ThemeProvider"
 
 let styled
 
@@ -30,5 +31,33 @@ describe('props', () => {
       }
     }).$mount()
     expectCSSMatches('.a {color: red;}')
+  })
+
+  it('should add any injected theme to the component', () => {
+    const theme = {
+      blue: "blue",
+    }
+
+    const Comp = styled.div`
+      color: ${props => props.theme.blue};
+    `
+    const Themed = {
+      render: function(createElement) {
+        return createElement(
+          ThemeProvider,
+          {
+            props: {
+              theme,
+            },
+          },
+          [
+            Comp
+          ]
+        )
+      }
+    }
+
+    const vm = new Vue(Themed).$mount()
+    expectCSSMatches('.a {color: blue;}')
   })
 })

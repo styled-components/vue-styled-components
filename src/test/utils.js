@@ -20,6 +20,7 @@ export const resetStyled = () => {
 }
 
 const stripWhitespace = str => str.trim().replace(/\s+/g, ' ')
+
 export const expectCSSMatches = (
   expectation,
   opts = {}
