@@ -51,7 +51,7 @@ describe('props', () => {
             },
           },
           [
-            Comp
+            createElement(Comp)
           ]
         )
       }
