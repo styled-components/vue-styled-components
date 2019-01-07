@@ -6,7 +6,7 @@
 
 > This version is compatible with Vue 2.x
 
-``` 
+```
 yarn add vue-styled-components
 ```
 
@@ -149,6 +149,45 @@ const StyledButton = styled.button`
 `;
 
 export default StyledButton;
+```
+
+### Theming
+
+`vue-styled-components` has full theming support by exporting a `<ThemeProvider>` wrapper component. This component provides a theme to all `Vue` components underneath itself via the context API. In the render tree all `vue-styled-components` will have access to the provided theme, even when they are multiple levels deep.
+
+Remember to register `ThemeProvider` locally.
+
+```JSX
+  import {ThemeProvider} from 'vue-styled-components'
+
+  new Vue({
+    // ...
+    components: {
+      'theme-provider': ThemeProvider
+    },
+    // ...
+  });
+```
+
+Add your `ThemeProvider` component:
+
+```JSX
+  <theme-provider theme="{
+    primary: 'palevioletred'
+  }">
+    <wrapper>
+      // ...
+    </wrapper>
+  </theme-provider>
+```
+
+And into your `Wrapper` component:
+
+```JSX
+  const Wrapper = styled.default.section`
+    padding: 4em;
+    background: ${props => props.theme.primary};
+  `;
 ```
 
 ### Style component constructors as `router-link`
