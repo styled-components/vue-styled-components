@@ -32,16 +32,7 @@ export default (ComponentStyle) => {
             domProps: {
               value: this.value
             },
-            on: {
-              input: (event) => {
-                if (event.target) {
-                  this.$emit('input', event.target.value)
-                }
-              },
-              click: (event) => {
-                this.$emit('click', event)
-              }
-            },
+            on: this.$listeners,
             scopedSlots: this.$scopedSlots
           },
           children
