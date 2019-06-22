@@ -29,6 +29,11 @@ describe('basic', () => {
     expectCSSMatches('')
   })
 
+  it('should throw an error when called', () => {
+    expect(() => styled``).toThrow()
+    expect(() => styled.notExistTag``).toThrow()
+  })
+
   // it('should generate an empty tag once rendered', () => {
   //   const Comp = styled.div``
   //   const vm = new Vue(Comp).$mount()
