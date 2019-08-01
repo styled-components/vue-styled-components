@@ -8,11 +8,7 @@ export default (ComponentStyle) => {
     const componentStyle = new ComponentStyle(rules)
 
     const StyledComponent = {
-      inject: {
-        theme: {
-          default: {}
-        }
-      },
+      inject: ['$theme'],
       props: mergedProps,
       render: function (createElement) {
         const children = []
@@ -47,6 +43,13 @@ export default (ComponentStyle) => {
         generatedClassName () {
           const componentProps = Object.assign({ theme: this.theme }, this.$props)
           return this.generateAndInjectStyles(componentProps)
+        },
+        theme () {
+          return this.$theme
+            ? this.$theme()
+            : {
+              default: {}
+            }
         }
       },
       extend (extendedRules) {
