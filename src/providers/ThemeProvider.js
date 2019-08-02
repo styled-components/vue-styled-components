@@ -5,7 +5,7 @@ export default {
   },
   provide () {
     return {
-      theme: this.theme
+      $theme: () => this.theme
     }
   },
   render: function (createElement) {

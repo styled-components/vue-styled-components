@@ -172,7 +172,7 @@ Remember to register `ThemeProvider` locally.
 Add your `ThemeProvider` component:
 
 ```JSX
-  <theme-provider theme="{
+  <theme-provider :theme="{
     primary: 'palevioletred'
   }">
     <wrapper>
