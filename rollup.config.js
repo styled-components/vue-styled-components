@@ -29,15 +29,7 @@ const targets = prod ? prodTarget : devTarget
 const plugins = [
   commonjs(),
   babel({
-    babelrc: false,
-    presets: [
-      ['latest', { es2015: { modules: false }}]
-    ],
-    plugins: [
-      'external-helpers',
-      'transform-object-rest-spread',
-      'transform-class-properties'
-    ]
+    babelrc: true
   }),
   // Unlike Webpack and Browserify, Rollup doesn't automatically shim Node
   // builtins like `process`. This ad-hoc plugin creates a 'virtual module'
