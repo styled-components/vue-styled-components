@@ -4,7 +4,7 @@ import commonjs from 'rollup-plugin-commonjs'
 import inject from 'rollup-plugin-inject'
 import babel from 'rollup-plugin-babel'
 import json from 'rollup-plugin-json'
-import uglify from 'rollup-plugin-uglify'
+import { terser } from 'rollup-plugin-terser'
 import builtins from 'rollup-plugin-node-builtins'
 import visualizer from 'rollup-plugin-visualizer'
 
@@ -15,16 +15,19 @@ const mode = prod ? 'production' : 'development'
 
 console.log(`Creating ${mode} bundle...`)
 
-const prodTarget = [
-  { dest: 'dist/vue-styled-components.min.js', format: 'umd' }
+const moduleName = 'styled'
+const exports = 'named'
+
+const prodOutput = [
+  { exports, file: 'dist/vue-styled-components.min.js', format: 'umd', name: moduleName }
 ]
 
-const devTarget = [
-  { dest: 'dist/vue-styled-components.js', format: 'umd' },
-  { dest: 'dist/vue-styled-components.es.js', format: 'es' }
+const devOutput = [
+  { exports, file: 'dist/vue-styled-components.js', format: 'umd', name: moduleName },
+  { exports, file: 'dist/vue-styled-components.es.js', format: 'es', name: moduleName }
 ]
 
-const targets = prod ? prodTarget : devTarget
+const output = prod ? prodOutput : devOutput
 
 const plugins = [
   commonjs(),
@@ -46,10 +49,7 @@ const plugins = [
   },
   builtins(),
   nodeResolve({
-    jsnext: true,
-    main: true,
-    browser: true,
-    preferBuiltins: false
+    mainFields: ['module', 'main', 'jsnext', 'browser']
   }),
   replace({
     'process.env.NODE_ENV': JSON.stringify(prod ? 'production' : 'development')
@@ -60,12 +60,10 @@ const plugins = [
   json()
 ]
 
-if (prod) plugins.push(uglify(), visualizer({ filename: './bundle-stats.html' }))
+if (prod) plugins.push(terser(), visualizer({ filename: './bundle-stats.html' }))
 
 export default {
-  entry: 'src/index.js',
-  moduleName: 'styled',
-  exports: 'named',
-  targets,
+  input: 'src/index.js',
+  output,
   plugins
 }
