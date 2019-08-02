@@ -155,8 +155,6 @@ export default StyledButton;
 
 `vue-styled-components` has full theming support by exporting a `<ThemeProvider>` wrapper component. This component provides a theme to all `Vue` components underneath itself via the context API. In the render tree all `vue-styled-components` will have access to the provided theme, even when they are multiple levels deep.
 
-ThemeProvider supports reactive theme, i.e. it can be derived via vuex and changed over the time.
-
 Remember to register `ThemeProvider` locally.
 
 ```JSX
@@ -174,7 +172,7 @@ Remember to register `ThemeProvider` locally.
 Add your `ThemeProvider` component:
 
 ```JSX
-  <theme-provider theme="{
+  <theme-provider :theme="{
     primary: 'palevioletred'
   }">
     <wrapper>
