@@ -51,7 +51,6 @@ export default (ComponentStyle) => {
           return this.generateAndInjectStyles(componentProps)
         },
         theme () {
-          console.log(this.$theme)
           return this.$theme()
         }
       },
