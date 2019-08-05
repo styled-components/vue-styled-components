@@ -1,11 +1,14 @@
 export default (ComponentStyle) => {
-  const createStyledComponent = (target, rules, props) => {
+  const createStyledComponent = (target, rules, props, attrs) => {
     const prevProps = target && typeof target !== 'string'
       ? (typeof target === 'object' ? target.props : (typeof target === 'function' ? target.options.props : {}))
       : {}
     const mergedProps = Object.assign({}, prevProps, props)
 
     const componentStyle = new ComponentStyle(rules)
+
+    // Null check
+    const attributes = attrs || {}
 
     const StyledComponent = {
       inject: {
@@ -30,6 +33,7 @@ export default (ComponentStyle) => {
           target,
           {
             class: [this.generatedClassName],
+            attrs: attributes,
             props: this.$props,
             domProps: {
               value: this.value
