@@ -11,7 +11,7 @@ describe('css features', () => {
   })
 
   it('should add vendor prefixes in the right order', () => {
-    const Comp = keyframes`
+    const rotate = keyframes`
       from {
         transform: rotate(0deg);
       }
@@ -21,9 +21,14 @@ describe('css features', () => {
       }
     `
 
+    const Comp = styled.div`
+      animation: ${rotate} 2s linear infinite;
+    `
+
     const vm = new Vue(Comp).$mount()
+
     expectCSSMatches(
-      '@keyframes iVXCSc { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }'
+      '@keyframes iVXCSc { from { transform: rotate(0deg); } to { transform: rotate(360deg); } } .a {-webkit-animation:iVXCSc 2s linear infinite;animation:iVXCSc 2s linear infinite;}'
     )
   })
 })

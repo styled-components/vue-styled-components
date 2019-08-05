@@ -54,7 +54,7 @@ describe('component features', () => {
       components: { StyledComp },
       template: `
         <styled-comp>
-          <template scope='{ p }'>{{ p }}</template>
+          <template slot-scope='{ p }'>{{ p }}</template>
         </styled-comp>`
     }).$mount()
     expect(vm.$el.innerHTML).toEqual('ActualContent')
@@ -70,7 +70,7 @@ describe('component features', () => {
       components: { StyledComp },
       template: `
         <styled-comp>
-          <template slot='content' scope='{ p }'>{{ p }}</template>
+          <template slot='content' slot-scope='{ p }'>{{ p }}</template>
         </styled-comp>`
     }).$mount()
     expect(vm.$el.innerHTML).toEqual('ActualContent')
