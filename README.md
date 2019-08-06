@@ -190,6 +190,21 @@ And into your `Wrapper` component:
   `;
 ```
 
+### HTML Attributes
+
+While creating a styled component you can pass an object that describes html attibutes of this component.
+
+```JSX
+import styled from 'vue-styled-components';
+
+const StyledImage = styled('img', {}, { src: 'image.jpg', alt: 'Test image' })`
+  width: 50px;
+  height: 50px;
+`;
+
+export default StyledImage;
+```
+
 ### Style component constructors as `router-link`
 
 You can style also Vue component constructors as `router-link` from `vue-router` and other components
