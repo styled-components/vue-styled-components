@@ -19,7 +19,10 @@ export const resetStyled = () => {
   return _styled(_styledComponent(_ComponentStyle(classNames)))
 }
 
-const stripWhitespace = str => str.trim().replace(/\s+/g, ' ')
+const stripWhitespace = str => str.trim()
+  .replace(/\s+/g, ' ')
+  .replace(/\s+\{/g, '{')
+  .replace(/\:\s+/g, ':')
 
 export const expectCSSMatches = (
   expectation,
@@ -27,6 +30,7 @@ export const expectCSSMatches = (
 ) => {
   const { ignoreWhitespace = true, styleSheet = mainStyleSheet } = opts
   const css = styleSheet.rules().map(rule => rule.cssText).join('\n')
+
   if (ignoreWhitespace) {
     expect(stripWhitespace(css)).toEqual(stripWhitespace(expectation))
   } else {
