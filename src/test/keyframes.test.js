@@ -21,14 +21,9 @@ describe('css features', () => {
       }
     `
 
-    const Comp = styled.div`
-      animation: ${rotate} 2s linear infinite;
-    `
-
-    const vm = new Vue(Comp).$mount()
-
     expectCSSMatches(
-      '@keyframes iVXCSc { from { transform: rotate(0deg); } to { transform: rotate(360deg); } } .a {-webkit-animation:iVXCSc 2s linear infinite;animation:iVXCSc 2s linear infinite;}'
+      '@keyframes iVXCSc { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }',
+      { rotate }
     )
   })
 })

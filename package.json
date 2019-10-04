@@ -37,7 +37,7 @@
     "glamor": "^2.20.24",
     "inline-style-prefixer": "^2.0.5",
     "lodash.isplainobject": "^4.0.6",
-    "stylis": "^2.0.3"
+    "stylis": "^3.5.4"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
