@@ -10,6 +10,7 @@ export default (nameGenerator) => {
   class ComponentStyle {
     constructor (rules) {
       this.rules = rules
+      stylis.set({ keyframe: false })
       if (!styleSheet.injected) styleSheet.inject()
       this.insertedRule = styleSheet.insert('')
     }
