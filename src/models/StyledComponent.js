@@ -3,7 +3,8 @@ export default (ComponentStyle) => {
     const prevProps = target && typeof target !== 'string'
       ? (typeof target === 'object' ? target.props : (typeof target === 'function' ? target.options.props : {}))
       : {}
-    const mergedProps = Object.assign({}, prevProps, props)
+
+    const mergedProps = { ...prevProps, ...props }
 
     const componentStyle = new ComponentStyle(rules)
 
@@ -26,6 +27,8 @@ export default (ComponentStyle) => {
           }
         }
 
+        console.log()
+
         return createElement(
           target,
           {
@@ -47,7 +50,7 @@ export default (ComponentStyle) => {
       },
       computed: {
         generatedClassName () {
-          const componentProps = Object.assign({ theme: this.theme }, this.$props)
+          const componentProps = { theme: this.theme, ...this.$props }
           return this.generateAndInjectStyles(componentProps)
         },
         theme () {

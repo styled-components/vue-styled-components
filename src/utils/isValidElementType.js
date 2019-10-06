@@ -5,7 +5,7 @@ export default function isValidElementType (tag) {
     return false
   }
   if (typeof tag === 'string') {
-    return domElements.includes(tag)
+    return domElements.indexOf(tag) !== -1
   }
   if (typeof tag === 'object') {
     return !!tag.template || !!tag.withComponent
