@@ -8,7 +8,7 @@
     <h1>Basic Example</h1>
     <div id="container"></div>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
     <script src="/vue-styled-components.js"></script>
     <script type="text/babel">
 
@@ -32,11 +32,18 @@
     // Create a <CustomTitle> vue component that renders an <h1> which is
     // centered, palevioletred and sized at 1.5em
     const CustomTitle = styled.default.h1`
-      font-size: 1.5em;
+      font-size: 2em;
       text-align: center;
       color: ${props => props.theme.primary};
       animation: ${animation} 2s linear infinite;
+
+      @supports (-webkit-text-stroke: 1px) {
+        -webkit-text-stroke: 2px ${props => props.theme.primary};
+        color: transparent
+      }
     `;
+
+    const H2 = CustomTitle.withComponent('h2')
 
     // Create a <Wrapper> vue component that renders a <section> with
     // some padding and a papayawhip background
@@ -44,6 +51,25 @@
       padding: 4em;
       background: ${props => props.theme.secondary};
     `;
+
+    const W2 = styled.default(Wrapper)`
+      color: red;
+    `;
+
+    const W3 = styled.default(W2)`
+      &:hover {
+        background: ${props => props.theme.primary};
+      }
+    `
+
+    const Btn = styled.default('button', { visible: Boolean })`
+      background-color: red;
+      opacity: ${props => props.visible ? 1: 0};
+    `
+
+    const SuperBtn = styled.default(Btn, { visible: Boolean, big: Boolean })`
+      font-size: ${props => props.big ? 22 : 18}px;
+    `
 
     new Vue({
       el: '#container',
@@ -53,12 +79,14 @@
         secondary: 'papayawhip'
       }">
         <wrapper>
-        <custom-title> Hello World, this is my first styled component! </custom-title>
+          <custom-title> Hello World, this is my first styled component! </custom-title>
+          <btn visible> Button </btn>
         </wrapper>
       </theme-provider>`,
       components: {
-        'custom-title': CustomTitle,
-        wrapper: Wrapper,
+        'custom-title': H2,
+        wrapper: W3,
+        btn: SuperBtn,
         'theme-provider': styled.ThemeProvider
       },
     });
