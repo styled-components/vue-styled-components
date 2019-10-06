@@ -1,3 +1,5 @@
+import css from '../constructors/css'
+
 export default (ComponentStyle) => {
   const createStyledComponent = (target, rules, props) => {
     const prevProps = target && typeof target !== 'string'
@@ -27,8 +29,6 @@ export default (ComponentStyle) => {
           }
         }
 
-        console.log()
-
         return createElement(
           target,
           {
@@ -57,8 +57,9 @@ export default (ComponentStyle) => {
           return this.$theme()
         }
       },
-      extend (extendedRules) {
-        return createStyledComponent(target, rules.slice().concat(extendedRules), props)
+      extend (cssRules, ...interpolations) {
+        const extendedRules = css(cssRules, ...interpolations)
+        return createStyledComponent(target, rules.concat(extendedRules), props)
       },
       withComponent (newTarget) {
         return createStyledComponent(newTarget, rules, props)

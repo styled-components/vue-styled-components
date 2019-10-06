@@ -29,17 +29,30 @@
         }
       `;
 
+    const VueComponent = {
+      functional: true,
+      render: function (createElement, context) {
+        // Transparently pass any attributes, event listeners, children, etc.
+        return createElement('button', context.data, context.children)
+      }
+    }
+
+    const StyledVueComponent = styled.default(VueComponent)``
+
     // Create a <CustomTitle> vue component that renders an <h1> which is
     // centered, palevioletred and sized at 1.5em
-    const CustomTitle = styled.default.h1`
+    const CustomTitle = styled.default('h1', { animate: Boolean })`
       font-size: 2em;
       text-align: center;
       color: ${props => props.theme.primary};
-      animation: ${animation} 2s linear infinite;
 
       @supports (-webkit-text-stroke: 1px) {
         -webkit-text-stroke: 2px ${props => props.theme.primary};
         color: transparent
+      }
+
+      ${props => props.animate &&
+        `animation: ${animation} 2s linear infinite;`
       }
     `;
 
@@ -52,14 +65,21 @@
       background: ${props => props.theme.secondary};
     `;
 
-    const W2 = styled.default(Wrapper)`
-      color: red;
+    const W2 = Wrapper.extend`
+      background: ${props => props.theme.tertiary};
     `;
 
     const W3 = styled.default(W2)`
       &:hover {
         background: ${props => props.theme.primary};
       }
+    `
+
+    const StyledInput = styled.default.input`
+      display: block;
+      width: 100%;
+      height: 60px;
+      border: solid 1px ${props => props.theme.primary};
     `
 
     const Btn = styled.default('button', { visible: Boolean })`
@@ -73,21 +93,42 @@
 
     new Vue({
       el: '#container',
+      data: {
+        text: 'Hello World, this is my first styled component!'
+      },
+      methods: {
+        input(e) {
+          console.log(e.target.value)
+          this.text += e.target.value
+        }
+      },
       template: `
       <theme-provider :theme="{
         primary: 'palevioletred',
-        secondary: 'papayawhip'
+        secondary: 'papayawhip',
+        tertiary: 'goldenrod'
       }">
-        <wrapper>
-          <custom-title> Hello World, this is my first styled component! </custom-title>
+        <wrapper color="salmon">
+          <custom-title> {{text}} </custom-title>
+          <styled-input
+            v-bind:value="text"
+            v-on:input="text = $event.target.value"
+          />
+          <input
+            v-bind:value="text"
+            v-on:input="text = $event.target.value"
+          />
           <btn visible> Button </btn>
+          <styled-vue-component>ciao</styled-vue-component>
         </wrapper>
       </theme-provider>`,
       components: {
         'custom-title': H2,
-        wrapper: W3,
+        wrapper: W2,
         btn: SuperBtn,
-        'theme-provider': styled.ThemeProvider
+        StyledVueComponent,
+        'styled-input': StyledInput,
+        'theme-provider': styled.ThemeProvider,
       },
     });
     </script>

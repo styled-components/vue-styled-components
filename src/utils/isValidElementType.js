@@ -8,7 +8,7 @@ export default function isValidElementType (tag) {
     return domElements.indexOf(tag) !== -1
   }
   if (typeof tag === 'object') {
-    return !!tag.template || !!tag.withComponent
+    return !!tag.template || !!tag.withComponent || !!tag.functional
   }
   return true
 }
