@@ -1,3 +1,5 @@
 export default function isStyledComponent (target) {
-  return target && typeof target.generatedClassName === 'string'
+  return target &&
+    target.methods &&
+    typeof target.methods.generateAndInjectStyles() === 'string'
 }

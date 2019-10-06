@@ -16,6 +16,11 @@
     styled.injectGlobal`
       body {
         background-color: #fefefe;
+        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      }
+
+      *, *::before, *::after {
+        box-sizing: border-box;
       }
     `;
 
@@ -29,22 +34,13 @@
         }
       `;
 
-    const VueComponent = {
-      functional: true,
-      render: function (createElement, context) {
-        // Transparently pass any attributes, event listeners, children, etc.
-        return createElement('button', context.data, context.children)
-      }
-    }
-
-    const StyledVueComponent = styled.default(VueComponent)``
-
     // Create a <CustomTitle> vue component that renders an <h1> which is
     // centered, palevioletred and sized at 1.5em
     const CustomTitle = styled.default('h1', { animate: Boolean })`
       font-size: 2em;
       text-align: center;
       color: ${props => props.theme.primary};
+      text-transform: uppercase;
 
       @supports (-webkit-text-stroke: 1px) {
         -webkit-text-stroke: 2px ${props => props.theme.primary};
@@ -57,6 +53,16 @@
     `;
 
     const H2 = CustomTitle.withComponent('h2')
+
+    const MyComponent = {
+      props: ['visible'],
+      template: `<h1><slot /></h1>`
+    }
+
+    const SuperCustomTitle = styled.default(MyComponent, { color: String })`
+      color: ${props => props.color || 'red'};
+      opacity: ${props => props.visible ? 1 : 0};
+    `
 
     // Create a <Wrapper> vue component that renders a <section> with
     // some padding and a papayawhip background
@@ -79,55 +85,67 @@
       display: block;
       width: 100%;
       height: 60px;
-      border: solid 1px ${props => props.theme.primary};
+      border: solid 3px transparent;
+      padding: 0 0.6em;
+      font-size: 1em;
+      line-height: 1;
+
+      &:focus {
+        outline: none;
+        border: solid 3px ${props => props.theme.primary};
+      }
     `
 
     const Btn = styled.default('button', { visible: Boolean })`
-      background-color: red;
+      outline: none;
+      border: none;
+      border-radius: 6em;
+      padding: 1em 2em;
+      color: #fff;
+      cursor: pointer;
+      margin: 1.5em 0;
+      background-color: ${props => props.theme.primary};
       opacity: ${props => props.visible ? 1: 0};
     `
 
     const SuperBtn = styled.default(Btn, { visible: Boolean, big: Boolean })`
-      font-size: ${props => props.big ? 22 : 18}px;
+      font-size: ${props => props.big ? 0.8 : 1}em;
     `
 
     new Vue({
       el: '#container',
       data: {
-        text: 'Hello World, this is my first styled component!'
-      },
-      methods: {
-        input(e) {
-          console.log(e.target.value)
-          this.text += e.target.value
-        }
+        text1: 'Hello World, this is my first styled component!',
+        text2: 'Hello World, this is my first styled component!',
+        animated1: false,
+        animated2: false
       },
       template: `
       <theme-provider :theme="{
         primary: 'palevioletred',
         secondary: 'papayawhip',
-        tertiary: 'goldenrod'
+        tertiary: 'lavenderblush'
       }">
-        <wrapper color="salmon">
-          <custom-title> {{text}} </custom-title>
-          <styled-input
-            v-bind:value="text"
-            v-on:input="text = $event.target.value"
-          />
-          <input
-            v-bind:value="text"
-            v-on:input="text = $event.target.value"
-          />
-          <btn visible> Button </btn>
-          <styled-vue-component>ciao</styled-vue-component>
+        <wrapper>
+          <custom-title :visible="true" :animate="animated1"> {{text1}} </custom-title>
+          <styled-input v-model="text1" />
+          <btn visible @click="animated1 = !animated1"> A Styled Button </btn>
         </wrapper>
+        <w-2>
+          <h-2 :animate="animated2"> {{text2}} </h-2>
+          <styled-input v-model="text2" />
+          <super-btn visible @click="animated2 = !animated2"> An extension of Styled Button </super-btn>
+        </w-2>
       </theme-provider>`,
       components: {
-        'custom-title': H2,
-        wrapper: W2,
-        btn: SuperBtn,
-        StyledVueComponent,
-        'styled-input': StyledInput,
+        CustomTitle,
+        Wrapper,
+        W2,
+        H2,
+        Btn,
+        SuperBtn,
+        SuperCustomTitle,
+        StyledInput,
         'theme-provider': styled.ThemeProvider,
       },
     });

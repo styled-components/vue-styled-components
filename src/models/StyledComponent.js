@@ -1,14 +1,13 @@
 import css from '../constructors/css'
+import normalizeProps from '../utils/normalizeProps'
 
 export default (ComponentStyle) => {
   const createStyledComponent = (target, rules, props) => {
-    const prevProps = target && typeof target !== 'string'
-      ? (typeof target === 'object' ? target.props : (typeof target === 'function' ? target.options.props : {}))
-      : {}
-
-    const mergedProps = { ...prevProps, ...props }
-
     const componentStyle = new ComponentStyle(rules)
+
+    // handle array-declaration props
+    const currentProps = normalizeProps(props)
+    const prevProps = normalizeProps(target.props)
 
     const StyledComponent = {
       inject: {
@@ -18,8 +17,17 @@ export default (ComponentStyle) => {
           }
         }
       },
-      props: mergedProps,
-      render: function (createElement) {
+      props: {
+        value: null,
+        ...currentProps,
+        ...prevProps
+      },
+      data () {
+        return {
+          localValue: this.value
+        }
+      },
+      render (createElement) {
         const children = []
         for (const slot in this.$slots) {
           if (slot === 'default') {
@@ -35,9 +43,16 @@ export default (ComponentStyle) => {
             class: [this.generatedClassName],
             props: this.$props,
             domProps: {
-              value: this.value
+              value: this.localValue
             },
-            on: this.$listeners,
+            on: {
+              ...this.$listeners,
+              input: event => {
+                if (event && event.target) {
+                  this.localValue = event.target.value
+                }
+              }
+            },
             scopedSlots: this.$scopedSlots
           },
           children
@@ -55,6 +70,14 @@ export default (ComponentStyle) => {
         },
         theme () {
           return this.$theme()
+        }
+      },
+      watch: {
+        value (newValue) {
+          this.localValue = newValue
+        },
+        localValue () {
+          this.$emit('input', this.localValue)
         }
       },
       extend (cssRules, ...interpolations) {

@@ -3,7 +3,7 @@ import isVueComponent from './isVueComponent'
 import isStyledComponent from './isStyledComponent'
 
 export default function isValidElementType (target) {
-  return isTag(target) ||
+  return isStyledComponent(target) ||
     isVueComponent(target) ||
-    isStyledComponent(target)
+    isTag(target)
 }
