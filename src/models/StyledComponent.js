@@ -40,12 +40,6 @@ export default (ComponentStyle) => {
         }
         const element = this.$props.as
         return createElement(
-          // We check to see if the target element is a Vue / Styled component.
-          // If true, we render the component,
-          // Otherwise, we know that it's the inner-most / inner styled component.
-          // Before we render it, we check to see if a user as declared the polymorphic "as" prop.
-          // If "as" is a valid HTML Element, we render the element.
-          // If "as" is invalid, we render the default declared tag.
           isVueComponent(target) ? target : element || target,
           {
             class: [this.generatedClassName],
