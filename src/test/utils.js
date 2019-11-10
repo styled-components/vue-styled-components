@@ -32,10 +32,8 @@ export const expectCSSMatches = (
   const css = styleSheet.rules().map(rule => rule.cssText).join('\n')
 
   if (ignoreWhitespace) {
-    console.log(css)
     expect(stripWhitespace(css)).toEqual(stripWhitespace(expectation))
   } else {
-    console.log(css)
     expect(css).toEqual(expectation)
   }
   return css
