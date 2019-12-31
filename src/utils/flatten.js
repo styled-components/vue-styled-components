@@ -4,7 +4,7 @@ import hyphenateStyleName from './hyphenateStyleName'
 export const objToCss = (obj, prevKey) => {
   const css = Object.keys(obj).map(key => {
     if (isPlainObject(obj[key])) return objToCss(obj[key], key)
-    if (typeof obj[key] !== 'undefined') return
+    if (typeof obj[key] === 'undefined') return
     return `${hyphenateStyleName(key)}: ${obj[key]};`
   }).join(' ')
   return prevKey ? `${prevKey} {
