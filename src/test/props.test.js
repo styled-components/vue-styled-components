@@ -60,6 +60,4 @@ describe('props', () => {
     const vm = new Vue(Themed).$mount()
     expectCSSMatches('.a {color: blue;}')
   })
-
-  it()
 })
