@@ -19,7 +19,7 @@ export default (ComponentStyle) => {
         }
       },
       props: {
-        as: undefined,
+        as: [String, Object],
         value: null,
         ...currentProps,
         ...prevProps
@@ -40,18 +40,7 @@ export default (ComponentStyle) => {
         }
 
         return createElement(
-          /**
-           * The reason for this check is to test whether the "target" is a Vue / Styled component.
-           * If the target is a styled component, we render that styled component to preserve the
-           * styles inherited from the "target" in the new component to be rendered.
-           *
-           * The "target" will inherently possess the "as" polymorphic prop. This allows the
-           * consumer component to render the tag passed inside of it's "as" element it's
-           * rendering recursively.
-           *
-           * Otherwise if the "target" is not a styled component we render the "as" prop element.
-           * If the "as" prop is not provided, we use the default element.
-           */
+          // Check if target is StyledComponent to preserve inner component styles for composition
           isVueComponent(target) ? target : this.$props.as || target,
           {
             class: [this.generatedClassName],
