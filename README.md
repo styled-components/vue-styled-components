@@ -230,16 +230,6 @@ const TomatoButton = StyledButton.extend`
 export default TomatoButton;
 ```
 
-### withComponent
-Let's say you have a `button` and an `a` tag. You want them to share the exact same style. This is achievable with `.withComponent`.
-```JSX
-const Button = styled.button`
-  background: green;
-  color: white;
-`
-const Link = Button.withComponent('a')
-```
-
 ### Polymorphic `as` prop
 If you want to keep all the styling you've applied to a component but just switch out what's being ultimately rendered (be it a different HTML tag or a different custom component), you can use the "as" prop to do this at runtime. Another powerful feature of the `as` prop is that it preserves styles if the lowest-wrapped component is a `StyledComponent`.
 
@@ -259,6 +249,16 @@ Using the `as` prop in another template/component would be as shown below.
 </template>
 ```
 This sort of thing is very useful in use cases like a navigation bar where some of the items should be links and some just buttons, but all be styled the same way.
+
+### withComponent
+Let's say you have a `button` and an `a` tag. You want them to share the exact same style. This is achievable with `.withComponent`.
+```JSX
+const Button = styled.button`
+  background: green;
+  color: white;
+`
+const Link = Button.withComponent('a')
+```
 
 ### injectGlobal
 
