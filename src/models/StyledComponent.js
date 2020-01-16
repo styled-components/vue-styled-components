@@ -1,6 +1,5 @@
 import css from '../constructors/css'
 import normalizeProps from '../utils/normalizeProps'
-import isVueComponent from '../utils/isVueComponent'
 
 export default (ComponentStyle) => {
   const createStyledComponent = (target, rules, props) => {
@@ -38,9 +37,9 @@ export default (ComponentStyle) => {
             children.push(createElement('template', { slot }, this.$slots[slot]))
           }
         }
-        const element = this.$props.as
+
         return createElement(
-          isVueComponent(target) ? target : element || target,
+          this.$props.as || target,
           {
             class: [this.generatedClassName],
             props: this.$props,

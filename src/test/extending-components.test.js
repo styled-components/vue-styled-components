@@ -78,8 +78,7 @@ describe('extending components', () => {
     expectCSSMatches('.a {color: blue;}.a > h1 {font-size: 4rem;} .b {color: red;}')
   })
 
-  // Skipped because test fails
-  xit('should keep default props from parent', () => {
+  it('should keep default props from parent', () => {
     const parentProps = {
       color: {
         type: String,
