@@ -10,6 +10,7 @@ export default (nameGenerator) => {
   class ComponentStyle {
     constructor (rules) {
       this.rules = rules
+      stylis.set({ keyframe: false })
       if (!styleSheet.injected) styleSheet.inject()
       this.insertedRule = styleSheet.insert('')
     }
@@ -27,7 +28,7 @@ export default (nameGenerator) => {
       if (!inserted[hash]) {
         const selector = nameGenerator(hash)
         inserted[hash] = selector
-        const css = stylis(`.${selector}`, flatCSS, false, false)
+        const css = stylis(`.${selector}`, flatCSS)
         this.insertedRule.appendRule(css)
       }
       return inserted[hash]

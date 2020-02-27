@@ -1,4 +1,9 @@
+import css from '../constructors/css'
+import normalizeProps from '../utils/normalizeProps'
+import isVueComponent from '../utils/isVueComponent'
+
 export default (ComponentStyle) => {
+<<<<<<< HEAD
   const createStyledComponent = (target, rules, props, attrs) => {
     const prevProps = target && typeof target !== 'string'
       ? (typeof target === 'object' ? target.props : (typeof target === 'function' ? target.options.props : {}))
@@ -9,6 +14,14 @@ export default (ComponentStyle) => {
 
     // Null check
     const attributes = attrs || {}
+=======
+  const createStyledComponent = (target, rules, props) => {
+    const componentStyle = new ComponentStyle(rules)
+
+    // handle array-declaration props
+    const currentProps = normalizeProps(props)
+    const prevProps = normalizeProps(target.props)
+>>>>>>> b7719a0f238ef7abb900dc36904c487381201596
 
     const StyledComponent = {
       inject: {
@@ -18,8 +31,18 @@ export default (ComponentStyle) => {
           }
         }
       },
-      props: mergedProps,
-      render: function (createElement) {
+      props: {
+        as: [String, Object],
+        value: null,
+        ...currentProps,
+        ...prevProps
+      },
+      data () {
+        return {
+          localValue: this.value
+        }
+      },
+      render (createElement) {
         const children = []
         for (const slot in this.$slots) {
           if (slot === 'default') {
@@ -30,15 +53,23 @@ export default (ComponentStyle) => {
         }
 
         return createElement(
-          target,
+          // Check if target is StyledComponent to preserve inner component styles for composition
+          isVueComponent(target) ? target : this.$props.as || target,
           {
             class: [this.generatedClassName],
             attrs: attributes,
             props: this.$props,
             domProps: {
-              value: this.value
+              value: this.localValue
             },
-            on: this.$listeners,
+            on: {
+              ...this.$listeners,
+              input: event => {
+                if (event && event.target) {
+                  this.localValue = event.target.value
+                }
+              }
+            },
             scopedSlots: this.$scopedSlots
           },
           children
@@ -51,15 +82,24 @@ export default (ComponentStyle) => {
       },
       computed: {
         generatedClassName () {
-          const componentProps = Object.assign({ theme: this.theme }, this.$props)
+          const componentProps = { theme: this.theme, ...this.$props }
           return this.generateAndInjectStyles(componentProps)
         },
         theme () {
           return this.$theme()
         }
       },
-      extend (extendedRules) {
-        return createStyledComponent(target, rules.slice().concat(extendedRules), props)
+      watch: {
+        value (newValue) {
+          this.localValue = newValue
+        },
+        localValue () {
+          this.$emit('input', this.localValue)
+        }
+      },
+      extend (cssRules, ...interpolations) {
+        const extendedRules = css(cssRules, ...interpolations)
+        return createStyledComponent(target, rules.concat(extendedRules), props)
       },
       withComponent (newTarget) {
         return createStyledComponent(newTarget, rules, props)
