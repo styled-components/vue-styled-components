@@ -15,8 +15,8 @@ const hotBuild = () => exec('npm run build:dist', (err, stdout, stderr) => {
   }
 })
 
-watch(srcPath, (filename) => {
-  console.log(`${filename} file has changed`)
+watch(srcPath, { recursive: true }, (evt, filename) => {
+  console.log(`${evt} - ${filename} file has changed`)
   hotBuild()
 })
 

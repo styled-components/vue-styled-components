@@ -36,7 +36,7 @@ describe('basic', () => {
 
   it('should allow for inheriting components that are not styled', () => {
     const componentConfig = { name: 'Parent', template: '<div><slot/></div>', methods: {} }
-    expect(() => styled(componentConfig, {})``).toNotThrow()
+    expect(() => styled(componentConfig, {})``).not.toThrow()
   })
 
   // it('should generate an empty tag once rendered', () => {
