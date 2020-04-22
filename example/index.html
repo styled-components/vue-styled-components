@@ -75,11 +75,15 @@
       background: ${props => props.theme.tertiary};
     `;
 
-    const W3 = styled.default(W2)`
-      &:hover {
-        background: ${props => props.theme.primary};
-      }
+    // Custom Wrapper
+    const W3 = styled.default(Wrapper, {
+      color: String,
+      bg: String
+    })`
+      color: ${props => props.color};
+      background-color: ${props => props.bg};
     `
+
 
     const StyledInput = styled.default.input`
       display: block;
@@ -106,10 +110,28 @@
       margin: 1.5em 0;
       background-color: ${props => props.theme.primary};
       opacity: ${props => props.visible ? 1: 0};
+
+      &:focus {
+        outline: none;
+        border: solid 3px ${props => props.theme.primary};
+      }
     `
 
     const SuperBtn = styled.default(Btn, { visible: Boolean, big: Boolean })`
       font-size: ${props => props.big ? 0.8 : 1}em;
+    `
+
+    const CustomBtn = styled.default(Btn, {
+      color: String,
+      bg: String
+    })`
+      color: ${props => props.color};
+      background-color: ${props => props.bg};
+
+      &:focus {
+        outline: none;
+        border: solid 3px ${props => props.color};
+      }
     `
 
     new Vue({
@@ -118,7 +140,9 @@
         text1: 'Hello World, this is my first styled component!',
         text2: 'Hello World, this is my first styled component!',
         animated1: false,
-        animated2: false
+        animated2: false,
+        element: 'div',
+        setElement: 'div'
       },
       template: `
       <theme-provider :theme="{
@@ -136,18 +160,44 @@
           <styled-input v-model="text2" />
           <super-btn visible @click="animated2 = !animated2"> An extension of Styled Button </super-btn>
         </w-2>
+        <w-3
+          bg="#c6f7e6"
+        >
+        <custom-title :visible="true">Change Rendered Elements with "as" prop.</custom-title>
+          <h3>Enter any HTML element and see the element rendered by the styled component change 👇🏽</h3>
+          <styled-input @keydown.enter="updateElement" placeholder="Enter an HTML element! Like 'button' or 'section'" v-model="element" />
+          <custom-btn
+            visible
+            :as="setElement"
+            role="button"
+            tabindex="0"
+            color="#42a786"
+            bg="papayawhip"
+            aria-label="Btn rendered as div"
+            @keydown.space="updateElement"
+          >
+            I am the "btn" component rendered as a "{{ setElement }}" using the \`as\` prop! 🎉
+          </custom-btn>
+        </w-3>
       </theme-provider>`,
       components: {
         CustomTitle,
         Wrapper,
         W2,
+        W3,
         H2,
         Btn,
         SuperBtn,
+        CustomBtn,
         SuperCustomTitle,
         StyledInput,
         'theme-provider': styled.ThemeProvider,
       },
+      methods: {
+        updateElement() {
+          this.setElement = this.element
+        }
+      }
     });
     </script>
   </body>

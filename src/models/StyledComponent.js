@@ -1,5 +1,6 @@
 import css from '../constructors/css'
 import normalizeProps from '../utils/normalizeProps'
+import isVueComponent from '../utils/isVueComponent'
 
 export default (ComponentStyle) => {
   const createStyledComponent = (target, rules, props) => {
@@ -18,6 +19,7 @@ export default (ComponentStyle) => {
         }
       },
       props: {
+        as: [String, Object],
         value: null,
         ...currentProps,
         ...prevProps
@@ -38,7 +40,8 @@ export default (ComponentStyle) => {
         }
 
         return createElement(
-          target,
+          // Check if target is StyledComponent to preserve inner component styles for composition
+          isVueComponent(target) ? target : this.$props.as || target,
           {
             class: [this.generatedClassName],
             props: this.$props,
