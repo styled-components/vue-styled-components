@@ -54,7 +54,7 @@
     "chai": "^4.1.2",
     "chokidar": "^3.0.1",
     "danger": "^8.0.0",
-    "eslint": "^3.12.2",
+    "eslint": "^4.18.2",
     "eslint-config-vue": "^2.0.2",
     "eslint-plugin-vue": "^2.0.1",
     "expect": "^1.20.2",
