@@ -3,7 +3,10 @@ import normalizeProps from '../utils/normalizeProps'
 import isVueComponent from '../utils/isVueComponent'
 
 export default (ComponentStyle) => {
-  const createStyledComponent = (target, rules, props) => {
+  const createStyledComponent = (target, rules, props, options) => {
+    const {
+      attrs = []
+    } = options
     const componentStyle = new ComponentStyle(rules)
 
     // handle array-declaration props
@@ -46,6 +49,7 @@ export default (ComponentStyle) => {
             class: [this.generatedClassName],
             props: this.$props,
             domProps: {
+              ...this.attrs,
               value: this.localValue
             },
             on: {
@@ -68,11 +72,36 @@ export default (ComponentStyle) => {
       },
       computed: {
         generatedClassName () {
-          const componentProps = { theme: this.theme, ...this.$props }
+          const { context, attrs } = this
+          const componentProps = { ...context, ...attrs }
           return this.generateAndInjectStyles(componentProps)
         },
         theme () {
           return this.$theme()
+        },
+        context () {
+          return {
+            theme: this.theme,
+            ...this.$props
+          }
+        },
+        attrs () {
+          const resolvedAttrs = {}
+          const { context } = this
+
+          attrs.forEach((attrDef) => {
+            let resolvedAttrDef = attrDef
+
+            if (typeof resolvedAttrDef === 'function') {
+              resolvedAttrDef = resolvedAttrDef(context)
+            }
+
+            for (const key in resolvedAttrDef) {
+              context[key] = resolvedAttrs[key] = resolvedAttrDef[key]
+            }
+          })
+
+          return resolvedAttrs
         }
       },
       watch: {
@@ -85,10 +114,10 @@ export default (ComponentStyle) => {
       },
       extend (cssRules, ...interpolations) {
         const extendedRules = css(cssRules, ...interpolations)
-        return createStyledComponent(target, rules.concat(extendedRules), props)
+        return createStyledComponent(target, rules.concat(extendedRules), props, options)
       },
       withComponent (newTarget) {
-        return createStyledComponent(newTarget, rules, props)
+        return createStyledComponent(newTarget, rules, props, options)
       }
     }
 
