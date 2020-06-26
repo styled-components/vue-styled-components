@@ -1,5 +1,6 @@
 import css from '../constructors/css'
 import normalizeProps from '../utils/normalizeProps'
+import removeFalseProps from '../utils/removeFalseProps'
 import isVueComponent from '../utils/isVueComponent'
 
 export default (ComponentStyle) => {
@@ -68,7 +69,10 @@ export default (ComponentStyle) => {
       },
       computed: {
         generatedClassName () {
-          const componentProps = { theme: this.theme, ...this.$props }
+          const componentProps = {
+            theme: this.theme,
+            ...removeFalseProps(this.$props)
+          }
           return this.generateAndInjectStyles(componentProps)
         },
         theme () {
