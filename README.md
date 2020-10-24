@@ -192,7 +192,7 @@ And into your `Wrapper` component:
 
 ### Style component constructors as `router-link`
 
-You can style also Vue component constructors as `router-link` from `vue-router` and other components
+You can also style Vue component constructors as `router-link` from `vue-router` and other components
 
 ```JSX
 import styled from 'vue-styled-components';
