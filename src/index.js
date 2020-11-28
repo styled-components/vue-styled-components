@@ -1,5 +1,6 @@
 import generateAlphabeticName from './utils/generateAlphabeticName'
 import css from './constructors/css'
+import collectRules from './constructors/collectRules'
 import keyframes from './constructors/keyframes'
 import injectGlobal from './constructors/injectGlobal'
 import ThemeProvider from './providers/ThemeProvider'
@@ -14,4 +15,4 @@ const styled = _styled(
 
 export default styled
 
-export { css, injectGlobal, keyframes, ThemeProvider }
+export { css, collectRules, injectGlobal, keyframes, ThemeProvider }
