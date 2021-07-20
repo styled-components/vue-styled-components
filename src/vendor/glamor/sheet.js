@@ -63,7 +63,23 @@ export class StyleSheet {
     maxLength = (isBrowser && oldIE) ? 4000 : 65000
   } = {}) {
     this.isSpeedy = speedy // the big drawback here is that the css won't be editable in devtools
-    this.sheet = undefined
+    this.sheet = isBrowser ? sheetForTag(makeStyleTag()) : {
+      cssRules: [],
+      insertRule: (rule) => {
+        var serverRule = {
+          cssText: rule
+        }
+
+        this.sheet.cssRules.push(serverRule)
+
+        return {
+          serverRule: serverRule,
+          appendRule: (newCss) => {
+            return serverRule.cssText += newCss
+          }
+        }
+      }
+    }
     this.tags = []
     this.maxLength = maxLength
     this.ctr = 0
@@ -123,7 +139,7 @@ export class StyleSheet {
       }
       else{
         const textNode = document.createTextNode(rule)
-        last(this.tags).appendChild(textNode)
+        // last(this.tags).appendChild(textNode) // this fails because last(this.tags) is a CSSStyleSheet... seems the author expected it to be a DOM Node?
         insertedRule = { textNode, appendRule: newCss => textNode.appendData(newCss)}
 
         if(!this.isSpeedy) {
