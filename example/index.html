@@ -100,6 +100,16 @@
       }
     `
 
+    const ReadonlyStyledInput = styled.default(StyledInput).attrs({ readOnly: true })`
+      color: ${props => props.theme.disabled};
+      border-color: ${props => props.theme.disabled};
+      font-family: ${props => props.noop};
+
+      &:focus {
+        border-color: ${props => props.theme.disabled};
+      }
+    `
+
     const Btn = styled.default('button', { visible: Boolean })`
       outline: none;
       border: none;
@@ -138,7 +148,7 @@
       el: '#container',
       data: {
         text1: 'Hello World, this is my first styled component!',
-        text2: 'Hello World, this is my first styled component!',
+        text2: 'Hello World, this is my first styled component, I am readonly using .attrs function!',
         animated1: false,
         animated2: false,
         element: 'div',
@@ -148,7 +158,8 @@
       <theme-provider :theme="{
         primary: 'palevioletred',
         secondary: 'papayawhip',
-        tertiary: 'lavenderblush'
+        tertiary: 'lavenderblush',
+        disabled: 'gainsboro'
       }">
         <wrapper>
           <custom-title :visible="true" :animate="animated1"> {{text1}} </custom-title>
@@ -157,7 +168,7 @@
         </wrapper>
         <w-2>
           <h-2 :animate="animated2"> {{text2}} </h-2>
-          <styled-input v-model="text2" />
+          <readonly-styled-input v-model="text2" />
           <super-btn visible @click="animated2 = !animated2"> An extension of Styled Button </super-btn>
         </w-2>
         <w-3
@@ -191,7 +202,8 @@
         CustomBtn,
         SuperCustomTitle,
         StyledInput,
-        'theme-provider': styled.ThemeProvider,
+        ReadonlyStyledInput,
+        ThemeProvider: styled.ThemeProvider,
       },
       methods: {
         updateElement() {
