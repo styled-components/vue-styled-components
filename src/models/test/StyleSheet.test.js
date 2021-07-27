@@ -1,6 +1,7 @@
 import styleSheet from '../StyleSheet'
 import { resetStyled } from '../../test/utils'
 import expect from 'expect'
+import sinon from 'sinon'
 
 describe('stylesheet', () => {
   beforeEach(() => {
@@ -9,6 +10,7 @@ describe('stylesheet', () => {
 
   describe('inject', () => {
     beforeEach(() => {
+      styleSheet.serverRendered = false
       styleSheet.inject()
     })
     it('should inject the global sheet', () => {
@@ -19,6 +21,40 @@ describe('stylesheet', () => {
     })
     it('should specify that the sheets have been injected', () => {
       expect(styleSheet.injected).toBe(true)
+    })
+  })
+
+  describe('server-side inject', () => {
+    beforeEach(() => {
+      styleSheet.serverRendered = true
+    })
+    afterEach(() => {
+      styleSheet.serverRendered = false
+    })
+    it('does not call injects if serverRendered is true', () => {
+      const globalInject = sinon.spy()
+      const componentInject = sinon.spy()
+      styleSheet.inject()
+      expect(globalInject.called).toBe(false)
+      expect(componentInject.called).toBe(false)
+    })
+  })
+
+  describe('serverRender', () => {
+    beforeEach(() => {
+      styleSheet.serverRendered = false
+    })
+    afterEach(() => {
+      styleSheet.serverRendered = false
+    })
+    it('sets serverRendered to true when called', () => {
+      styleSheet.serverRender()
+      expect(styleSheet.serverRendered).toBe(true)
+    })
+    it('returns non empty rules', () => {
+      expect(styleSheet.serverRender()).toStrictEqual(styleSheet.rules().filter(function (rule) {
+        return rule.cssText.length > 0
+      }))
     })
   })
 
