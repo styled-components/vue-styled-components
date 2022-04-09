@@ -1,127 +1,105 @@
+import { computed, h, inject, unref } from 'vue'
 import css from '../constructors/css'
-import normalizeProps from '../utils/normalizeProps'
+import { themeKey } from '../providers/themeKey'
 import isVueComponent from '../utils/isVueComponent'
+import normalizeProps from '../utils/normalizeProps'
 
-export default (ComponentStyle) => {
+export default ComponentStyle => {
   const createStyledComponent = (target, rules, props, options) => {
-    const {
-      attrs = []
-    } = options
+    const { attrs = [] } = options
     const componentStyle = new ComponentStyle(rules)
-
     // handle array-declaration props
     const currentProps = normalizeProps(props)
     const prevProps = normalizeProps(target.props)
+    const propDefs = Object.keys(prevProps)
 
-    const StyledComponent = {
-      inject: {
-        $theme: {
-          default: function () {
-            return () => ({ })
-          }
-        }
-      },
+    return {
       props: {
         as: [String, Object],
-        value: null,
-        ...currentProps,
-        ...prevProps
+        modelValue: null,
+        ...prevProps,
+        ...currentProps
       },
-      data () {
-        return {
-          localValue: this.value
-        }
-      },
-      render (createElement) {
-        const children = []
-        for (const slot in this.$slots) {
-          if (slot === 'default') {
-            children.push(this.$slots[slot])
-          } else {
-            children.push(createElement('template', { slot }, this.$slots[slot]))
-          }
-        }
 
-        return createElement(
-          // Check if target is StyledComponent to preserve inner component styles for composition
-          isVueComponent(target) ? target : this.$props.as || target,
-          {
-            class: [this.generatedClassName],
-            props: this.$props,
-            domProps: {
-              ...this.attrs,
-              value: this.localValue
-            },
-            on: {
-              ...this.$listeners,
-              input: event => {
-                if (event && event.target) {
-                  this.localValue = event.target.value
-                }
+      setup(props, { slots, emit }) {
+        const theme = inject(themeKey)
+
+        return () => {
+          const context = computed(() => ({
+            // @todo update w/vue 3.3
+            // @see https://github.com/vuejs/core/blob/56879e6b233d33a2e91e658451fec27e881ca7fd/packages/runtime-core/src/componentOptions.ts#L853-L857
+            theme: unref(theme),
+            ...props
+          }))
+
+          const computedAttrs = computed(() => {
+            const resolvedAttrs = {}
+
+            attrs.forEach(attrDef => {
+              let resolvedAttrDef = attrDef
+
+              if (typeof resolvedAttrDef === 'function') {
+                resolvedAttrDef = resolvedAttrDef(context.value)
               }
-            },
-            scopedSlots: this.$scopedSlots
-          },
-          children
-        )
-      },
-      methods: {
-        generateAndInjectStyles (componentProps) {
-          return componentStyle.generateAndInjectStyles(componentProps)
-        }
-      },
-      computed: {
-        generatedClassName () {
-          const { context, attrs } = this
-          const componentProps = { ...context, ...attrs }
-          return this.generateAndInjectStyles(componentProps)
-        },
-        theme () {
-          return this.$theme()
-        },
-        context () {
-          return {
-            theme: this.theme,
-            ...this.$props
-          }
-        },
-        attrs () {
-          const resolvedAttrs = {}
-          const { context } = this
 
-          attrs.forEach((attrDef) => {
-            let resolvedAttrDef = attrDef
+              for (const key in resolvedAttrDef) {
+                context.value[key] = resolvedAttrs[key] = resolvedAttrDef[key]
+              }
+            })
 
-            if (typeof resolvedAttrDef === 'function') {
-              resolvedAttrDef = resolvedAttrDef(context)
-            }
-
-            for (const key in resolvedAttrDef) {
-              context[key] = resolvedAttrs[key] = resolvedAttrDef[key]
-            }
+            return resolvedAttrs
           })
 
-          return resolvedAttrs
+          const generatedClassName = computed(() => {
+            const componentProps = { ...context.value, ...computedAttrs.value }
+
+            return generateAndInjectStyles(componentProps)
+          })
+
+          const generateAndInjectStyles = componentProps => {
+            return componentStyle.generateAndInjectStyles(componentProps)
+          }
+
+          const targetProps = {}
+          // diff explicit prop declarations against inherited props
+          if (propDefs.length) {
+            for (const [key, value] of Object.entries(props)) {
+              if (propDefs.includes(key)) {
+                targetProps[key] = value
+              }
+            }
+          }
+
+          return h(
+            isVueComponent(target) ? target : props.as || target,
+            {
+              ...targetProps,
+              ...computedAttrs.value,
+              value: props.modelValue,
+              class: generatedClassName.value,
+              onInput: e => {
+                emit('input', e)
+                emit('update:modelValue', e.target.value)
+              }
+            },
+            slots
+          )
         }
       },
-      watch: {
-        value (newValue) {
-          this.localValue = newValue
-        },
-        localValue () {
-          this.$emit('input', this.localValue)
-        }
-      },
-      extend (cssRules, ...interpolations) {
+
+      extend(cssRules, ...interpolations) {
         const extendedRules = css(cssRules, ...interpolations)
-        return createStyledComponent(target, rules.concat(extendedRules), props, options)
+        return createStyledComponent(
+          target,
+          rules.concat(extendedRules),
+          props,
+          options
+        )
       },
-      withComponent (newTarget) {
+      withComponent(newTarget) {
         return createStyledComponent(newTarget, rules, props, options)
       }
     }
-
-    return StyledComponent
   }
 
   return createStyledComponent

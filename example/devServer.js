@@ -1,22 +1,26 @@
+/* eslint-disable no-console */
 const path = require('path')
 const exec = require('child_process').exec
 const Express = require('express')
 const watch = require('node-watch')
 
-const srcPath = __dirname.split('/example')[0] + '/src';
+const srcPath = __dirname.split('/example')[0] + '/src'
 
-const hotBuild = () => exec('npm run build:dist', (err, stdout, stderr) => {
-  if (err) throw err
-  if (stdout) {
-    console.log(`npm run build:dist --- ${stdout}`)
-  }
-  if (stderr) {
-    console.log(`npm run build:dist --- ${stderr}`)
-  }
-})
+const hotBuild = () => {
+  exec('npm run build:dist', (err, stdout, stderr) => {
+    if (err) throw err
+    if (stdout) {
+      console.log(`npm run build:dist --- ${stdout}`)
+    }
+    if (stderr) {
+      console.log(`npm run build:dist --- ${stderr}`)
+    }
+  })
+}
 
 watch(srcPath, { recursive: true }, (evt, filename) => {
   console.log(`${evt} - ${filename} file has changed`)
+
   hotBuild()
 })
 
@@ -30,11 +34,17 @@ app.get('/with-perf.html', (req, res) => {
 })
 
 app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'))
+  res.sendFile(
+    path.join(
+      __dirname,
+      process.env.NODE_ENV === 'test'
+        ? '../cypress/fixtures/index.html'
+        : 'index.html'
+    )
+  )
 })
 
 app.listen(port, error => {
-  /* eslint-disable no-console */
   if (error) {
     console.error(error)
   } else {
@@ -44,5 +54,4 @@ app.listen(port, error => {
       port
     )
   }
-  /* eslint-enable no-console */
 })

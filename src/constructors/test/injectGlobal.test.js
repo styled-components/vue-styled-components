@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import { createApp } from 'vue'
 import expect from 'expect'
 
 import injectGlobal from '../injectGlobal'
@@ -11,55 +11,64 @@ const rule2 = 'margin: 0;'
 const rule3 = 'color: blue;'
 
 describe('injectGlobal', () => {
-  beforeEach(() => {
-    resetStyled()
-  })
+	beforeEach(() => {
+		resetStyled()
+	})
 
-  it(`should inject rules into the head`, () => {
-    injectGlobal`
+	it(`should inject rules into the head`, () => {
+		injectGlobal`
       html {
         ${rule1}
       }
     `
-    expect(styleSheet.injected).toBe(true)
-  })
+		expect(styleSheet.injected).toBe(true)
+	})
 
-  it(`should non-destructively inject styles when called repeatedly`, () => {
-    injectGlobal`
+	it(`should non-destructively inject styles when called repeatedly`, () => {
+		injectGlobal`
       html {
         ${rule1}
       }
     `
 
-    injectGlobal`
+		injectGlobal`
       a {
         ${rule2}
       }
     `
-    expectCSSMatches(`
+		expectCSSMatches(
+			`
       html {${rule1}}
       a {${rule2}}
-    `, { styleSheet })
-  })
+    `,
+			{ styleSheet }
+		)
+	})
 
-  it(`should inject styles in a separate sheet from a component`, () => {
-    const Comp = styled.div`
-      ${rule3}
-    `
-    const vm = new Vue(Comp).$mount();
+	it(`should inject styles in a separate sheet from a component`, () => {
+		const Comp = styled.div`
+			${rule3}
+		`
+		const vm = createApp(Comp).mount('body')
 
-    injectGlobal`
+		injectGlobal`
       html {
         ${rule1}
       }
     `
-    // Test the component sheet
-    expectCSSMatches(`
+		// Test the component sheet
+		expectCSSMatches(
+			`
       .a {${rule3}}
-    `, { styleSheet: styleSheet.componentStyleSheet })
-    // Test the global sheet
-    expectCSSMatches(`
+    `,
+			{ styleSheet: styleSheet.componentStyleSheet }
+		)
+		// Test the global sheet
+		expectCSSMatches(
+			`
       html {${rule1}}
-    `, { styleSheet: styleSheet.globalStyleSheet })
-  })
-});
+    `,
+			{ styleSheet: styleSheet.globalStyleSheet }
+		)
+	})
+})

@@ -1,0 +1,2 @@
+src/**/*.test.js
+src/vendor/**/*.js

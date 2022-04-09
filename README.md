@@ -2,9 +2,11 @@
 
 > Visual primitives for the component age. Use the best bits of ES6 and CSS to style your apps without stress 💅
 
+**Note: This is a work-in-progress fork of Lorenzo Girardi's `vue-styled-components` with target support for Vue 3.**
+
 ## Support
 
-> This version is compatible with Vue 2.x
+> This version is compatible with Vue 3.x
 
 ```
 yarn add vue-styled-components
@@ -19,7 +21,7 @@ Utilising tagged template literals (a recent addition to JavaScript) and the pow
 > Register first your component locally (see https://vuejs.org/v2/guide/components.html#Local-Registration)
 
 ```
-  new Vue({
+  createApp({
     // ...
     components {
       'styled-title': StyledTitle
@@ -160,7 +162,7 @@ Remember to register `ThemeProvider` locally.
 ```JSX
   import {ThemeProvider} from 'vue-styled-components'
 
-  new Vue({
+  createApp({
     // ...
     components: {
       'theme-provider': ThemeProvider

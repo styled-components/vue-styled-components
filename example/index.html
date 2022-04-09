@@ -1,30 +1,32 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title>Basic Example</title>
   </head>
+
   <body>
     <h1>Basic Example</h1>
-    <div id="container"></div>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.js"></script>
+    <div id="app"></div>
+    <script src="https://unpkg.com/vue@3"></script>
     <script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
     <script src="/vue-styled-components.js"></script>
     <script type="text/babel">
+      // Create a global style
+      styled.injectGlobal`
+        body {
+          background-color: #fefefe;
+          font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
 
-    // Create a global style
-    styled.injectGlobal`
-      body {
-        background-color: #fefefe;
-        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      }
+        *,
+        *::before,
+        *::after {
+          box-sizing: border-box;
+        }
+      `
 
-      *, *::before, *::after {
-        box-sizing: border-box;
-      }
-    `;
-
-    const animation = styled.keyframes`
+      const animation = styled.keyframes`
         from {
           transform: rotate(0deg);
         }
@@ -32,185 +34,244 @@
         to {
           transform: rotate(360deg);
         }
-      `;
+      `
 
-    // Create a <CustomTitle> vue component that renders an <h1> which is
-    // centered, palevioletred and sized at 1.5em
-    const CustomTitle = styled.default('h1', { animate: Boolean })`
-      font-size: 2em;
-      text-align: center;
-      color: ${props => props.theme.primary};
-      text-transform: uppercase;
+      // Create a <CustomTitle> vue component that renders an <h2> which is
+      // centered, primary theme color, and sized at 1.5em
+      const CustomTitle = styled.default('h2', { animate: Boolean })`
+        font-size: 2em;
+        text-align: center;
+        color: ${props => props.theme.primary};
+        text-transform: uppercase;
 
-      @supports (-webkit-text-stroke: 1px) {
-        -webkit-text-stroke: 2px ${props => props.theme.primary};
-        color: transparent
+        @supports (-webkit-text-stroke: 1px) {
+          -webkit-text-stroke: 2px ${props => props.theme.primary};
+          color: transparent
+        }
+
+        ${props =>
+          props.animate && `animation: ${animation} 2s linear infinite;`}
+      `
+
+      const H2 = CustomTitle.withComponent('h2')
+
+      const MyComponent = {
+        props: ['visible'],
+        template: `<h1><slot /></h1>`
       }
 
-      ${props => props.animate &&
-        `animation: ${animation} 2s linear infinite;`
-      }
-    `;
+      const SuperCustomTitle = styled.default(MyComponent, { color: String })`
+        color: ${props => props.color || 'red'};
+        opacity: ${props => (props.visible ? 1 : 0)};
+      `
 
-    const H2 = CustomTitle.withComponent('h2')
+      // Create a <Wrapper> vue component that renders a <section> with
+      // some padding and a secondary theme color background
+      const Wrapper = styled.default.section`
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 4em;
+        background-color: ${props => props.theme.secondary};
+      `
 
-    const MyComponent = {
-      props: ['visible'],
-      template: `<h1><slot /></h1>`
-    }
+      const W2 = Wrapper.extend`
+        background-color: ${props => props.theme.tertiary};
+      `
 
-    const SuperCustomTitle = styled.default(MyComponent, { color: String })`
-      color: ${props => props.color || 'red'};
-      opacity: ${props => props.visible ? 1 : 0};
-    `
+      // Custom Wrapper
+      const W3 = styled.default(Wrapper, {
+        color: String,
+        bg: String
+      })`
+        color: ${props => props.color};
+        background-color: ${props => props.bg};
+      `
 
-    // Create a <Wrapper> vue component that renders a <section> with
-    // some padding and a papayawhip background
-    const Wrapper = styled.default.section`
-      padding: 4em;
-      background: ${props => props.theme.secondary};
-    `;
+      const StyledInput = styled.default.input`
+        display: block;
+        width: 100%;
+        height: 60px;
+        border: solid 3px transparent;
+        padding: 0 0.6em;
+        font-size: 1em;
+        line-height: 1;
 
-    const W2 = Wrapper.extend`
-      background: ${props => props.theme.tertiary};
-    `;
+        &:focus {
+          outline: none;
+          border: solid 3px ${props => props.theme.primary};
+        }
+      `
 
-    // Custom Wrapper
-    const W3 = styled.default(Wrapper, {
-      color: String,
-      bg: String
-    })`
-      color: ${props => props.color};
-      background-color: ${props => props.bg};
-    `
+      const ReadonlyStyledInput = styled
+        .default(StyledInput)
+        .attrs({ readOnly: true })`
+          color: ${props => props.theme.disabled};
+          border-color: ${props => props.theme.disabled};
+          font-family: ${props => props.noop};
 
+          &:focus {
+            border-color: ${props => props.theme.disabled};
+          }
+        `
 
-    const StyledInput = styled.default.input`
-      display: block;
-      width: 100%;
-      height: 60px;
-      border: solid 3px transparent;
-      padding: 0 0.6em;
-      font-size: 1em;
-      line-height: 1;
-
-      &:focus {
+      const Btn = styled.default('button', { visible: Boolean })`
         outline: none;
-        border: solid 3px ${props => props.theme.primary};
-      }
-    `
+        border: solid 3px transparent;
+        border-radius: 6em;
+        padding: 1em 2em;
+        color: #fff;
+        cursor: pointer;
+        margin: 1.5em 0;
+        background-color: ${props => props.theme.primary};
+        opacity: ${props => (props.visible ? 1 : 0)};
+        transition: all .3s ease-in;
 
-    const ReadonlyStyledInput = styled.default(StyledInput).attrs({ readOnly: true })`
-      color: ${props => props.theme.disabled};
-      border-color: ${props => props.theme.disabled};
-      font-family: ${props => props.noop};
+        &:focus-visible {
+          outline: none;
+          border: solid 3px ${props => props.theme.border};
+        }
 
-      &:focus {
-        border-color: ${props => props.theme.disabled};
-      }
-    `
+        &:hover {
+          filter: brightness(110%);
+        }
+      `
 
-    const Btn = styled.default('button', { visible: Boolean })`
-      outline: none;
-      border: none;
-      border-radius: 6em;
-      padding: 1em 2em;
-      color: #fff;
-      cursor: pointer;
-      margin: 1.5em 0;
-      background-color: ${props => props.theme.primary};
-      opacity: ${props => props.visible ? 1: 0};
+      const SuperBtn = styled.default(Btn, { visible: Boolean, big: Boolean })`
+        font-size: ${props => (props.big ? 0.8 : 1)}em;
+      `
 
-      &:focus {
-        outline: none;
-        border: solid 3px ${props => props.theme.primary};
-      }
-    `
+      const CustomBtn = styled.default(Btn, {
+        color: String,
+        bg: String
+      })`
+        color: ${props => props.color};
+        background-color: ${props => props.bg};
+        &:focus-visible {
+          outline: none;
+          border: solid 3px ${props => props.color};
+        }
+      `
 
-    const SuperBtn = styled.default(Btn, { visible: Boolean, big: Boolean })`
-      font-size: ${props => props.big ? 0.8 : 1}em;
-    `
-
-    const CustomBtn = styled.default(Btn, {
-      color: String,
-      bg: String
-    })`
-      color: ${props => props.color};
-      background-color: ${props => props.bg};
-
-      &:focus {
-        outline: none;
-        border: solid 3px ${props => props.color};
-      }
-    `
-
-    new Vue({
-      el: '#container',
-      data: {
-        text1: 'Hello World, this is my first styled component!',
-        text2: 'Hello World, this is my first styled component, I am readonly using .attrs function!',
-        animated1: false,
-        animated2: false,
-        element: 'div',
-        setElement: 'div'
-      },
-      template: `
-      <theme-provider :theme="{
-        primary: 'palevioletred',
-        secondary: 'papayawhip',
-        tertiary: 'lavenderblush',
-        disabled: 'gainsboro'
-      }">
+      Vue.createApp({
+        template: `
+        <theme-provider :theme="currentTheme">
         <wrapper>
-          <custom-title :visible="true" :animate="animated1"> {{text1}} </custom-title>
+          <custom-title :visible="true" :animate="animated1">
+            {{ text1 }}
+          </custom-title>
           <styled-input v-model="text1" />
           <btn visible @click="animated1 = !animated1"> A Styled Button </btn>
         </wrapper>
         <w-2>
-          <h-2 :animate="animated2"> {{text2}} </h-2>
+          <h-2 :animate="animated2"> {{ text2 }} </h-2>
           <readonly-styled-input v-model="text2" />
           <super-btn visible @click="animated2 = !animated2"> An extension of Styled Button </super-btn>
         </w-2>
         <w-3
-          bg="#c6f7e6"
+          :bg="currentTheme.quaternary"
         >
-        <custom-title :visible="true">Change Rendered Elements with "as" prop.</custom-title>
-          <h3>Enter any HTML element and see the element rendered by the styled component change 👇🏽</h3>
-          <styled-input @keydown.enter="updateElement" placeholder="Enter an HTML element! Like 'button' or 'section'" v-model="element" />
+          <custom-title :visible="true">Change Rendered Elements with "as" prop.</custom-title>
+          <h3>Enter any HTML element and press the Enter key to see the element rendered by the styled component change 👇🏽</h3>
+          <styled-input @keydown.enter="updateElement" placeholder="Enter an HTML element! Like 'button' or 'section'" v-model="elementModel" />
           <custom-btn
             visible
             :as="setElement"
             role="button"
             tabindex="0"
             color="#42a786"
-            bg="papayawhip"
-            aria-label="Btn rendered as div"
+            :bg="isDarkMode ? 'black' : 'white'"
+            :aria-label="setElementLabel"
             @keydown.space="updateElement"
           >
             I am the "btn" component rendered as a "{{ setElement }}" using the \`as\` prop! 🎉
           </custom-btn>
         </w-3>
-      </theme-provider>`,
-      components: {
-        CustomTitle,
-        Wrapper,
-        W2,
-        W3,
-        H2,
-        Btn,
-        SuperBtn,
-        CustomBtn,
-        SuperCustomTitle,
-        StyledInput,
-        ReadonlyStyledInput,
-        ThemeProvider: styled.ThemeProvider,
-      },
-      methods: {
-        updateElement() {
-          this.setElement = this.element
+
+        <w-3
+          :bg="currentTheme.quinary"
+        >
+          <custom-title :visible="true">Toggle the theme. It's reactive!</custom-title>
+           <btn
+            visible
+            role="button"
+            tabindex="0"
+            color="#42a786"
+            bg="papayawhip"
+            aria-label="Toggle the theme"
+            @keydown.space="toggleTheme"
+            @click="toggleTheme"
+          >
+            Toggle theme 💅
+          </btn>
+        </w-3>
+
+        </theme-provider>`,
+        components: {
+          CustomTitle,
+          Wrapper,
+          W2,
+          W3,
+          H2,
+          Btn,
+          SuperBtn,
+          CustomBtn,
+          SuperCustomTitle,
+          StyledInput,
+          ReadonlyStyledInput,
+          ThemeProvider: styled.ThemeProvider
+        },
+        data: () => ({
+          text1: 'Hello World, this is my first styled component!',
+          text2:
+            'Hello World, this is my first styled component, I am readonly using .attrs function!',
+          animated1: false,
+          animated2: false,
+          elementModel: 'div',
+          mutableElement: 'div',
+          isDarkMode: false,
+          theme: {
+            light: {
+              primary: 'palevioletred',
+              secondary: '#d7f2ff',
+              tertiary: 'lavenderblush',
+              quaternary: '#c6f7e6',
+              quinary: 'papayawhip',
+              border: '#f51d8a',
+              disabled: 'gainsboro'
+            },
+            dark: {
+              primary: 'palevioletred',
+              secondary: '#6d462a',
+              tertiary: '#26548a',
+              quaternary: '#900421',
+              quinary: '#ffa50f',
+              border: '#f51d8a',
+              disabled: 'gainsboro'
+            }
+          }
+        }),
+        computed: {
+          setElement() {
+            return this.mutableElement || 'div'
+          },
+          setElementLabel() {
+            return `Btn rendered as ${this.setElement}`
+          },
+          currentTheme() {
+            return this.isDarkMode ? this.theme.dark : this.theme.light
+          }
+        },
+
+        methods: {
+          updateElement() {
+            this.mutableElement = this.elementModel
+          },
+          toggleTheme() {
+            this.isDarkMode = !this.isDarkMode
+          }
         }
-      }
-    });
+      }).mount('#app')
     </script>
   </body>
 </html>

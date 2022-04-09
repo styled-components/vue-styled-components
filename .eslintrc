@@ -1,0 +1,13 @@
+{
+  "root": true,
+  "env": {
+    "node": true
+  },
+  "plugins": ["prettier"],
+  "extends": ["eslint:recommended", "plugin:vue/vue3-recommended"],
+  "ignorePatterns": [
+    "src/vendor",
+    "*.test.js",
+    "src/test/utils.js"
+  ]
+}

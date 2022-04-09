@@ -1,15 +1,18 @@
+import { h, computed } from 'vue'
+import { themeKey } from './themeKey'
+
 export default {
   name: 'ThemeProvider',
   props: {
     theme: Object
   },
-  provide () {
+  provide() {
     return {
-      $theme: () => this.theme
+      [themeKey]: computed(() => this.theme)
     }
   },
-  render: function (createElement) {
-    return createElement('div', {}, this.$slots.default)
+
+  render() {
+    return h('div', {}, this.$slots.default())
   }
 }
-

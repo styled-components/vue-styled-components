@@ -1,14 +1,13 @@
-
 import hashStr from 'glamor/lib/hash'
 import flatten from '../utils/flatten'
 import styleSheet from './StyleSheet'
 import stylis from 'stylis'
 
-export default (nameGenerator) => {
+export default nameGenerator => {
   const inserted = {}
 
   class ComponentStyle {
-    constructor (rules) {
+    constructor(rules) {
       this.rules = rules
       stylis.set({ keyframe: false })
       if (!styleSheet.injected) styleSheet.inject()
@@ -21,8 +20,9 @@ export default (nameGenerator) => {
      * Parses that with PostCSS then runs PostCSS-Nested on it
      * Returns the hash to be injected on render()
      * */
-    generateAndInjectStyles (executionContext) {
-      const flatCSS = flatten(this.rules, executionContext).join('')
+    generateAndInjectStyles(executionContext) {
+      const flatCSS = flatten(this.rules, executionContext)
+        .join('')
         .replace(/^\s*\/\/.*$/gm, '') // replace JS comments
       const hash = hashStr(flatCSS)
       if (!inserted[hash]) {
