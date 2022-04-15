@@ -4,6 +4,7 @@
   "description": "Visual primitives for the component age. A simple port of styled-components 💅 for Vue",
   "main": "lib/index.js",
   "module": "dist/vue-styled-components.es.js",
+  "types": "dist/index.d.ts",
   "author": "Lorenzo Girardi",
   "license": "MIT",
   "bugs": {
@@ -78,6 +79,7 @@
     "rollup": "^2.7.1",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-inject": "^3.0.2",
     "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-node-builtins": "^2.1.2",
@@ -89,6 +91,9 @@
     "start-server-and-test": "^1.14.0",
     "vue": "^3.0.0"
   },
+  "peerDependencies": {
+    "vue": "^3.0.0"
+  },
   "lint-staged": {
     "*.js": [
       "npm run lint:fix",
@@ -96,6 +101,5 @@
       "git add"
     ]
   },
-  "pre-commit": "lint-staged",
-  "types": "index.d.ts"
+  "pre-commit": "lint-staged"
 }
