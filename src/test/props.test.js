@@ -1,7 +1,8 @@
-import Vue from 'vue'
+import { createApp, h, inject } from 'vue'
+import expect from 'expect'
 
 import { resetStyled, expectCSSMatches } from './utils'
-import ThemeProvider from "../providers/ThemeProvider"
+import ThemeProvider from '../providers/ThemeProvider'
 
 let styled
 
@@ -15,7 +16,7 @@ describe('props', () => {
     const Comp = styled('div', compProps)`
       color: ${props => props.fg || 'black'};
     `
-    const vm = new Vue(Comp).$mount()
+    const vm = createApp(Comp).mount('body')
     expectCSSMatches('.a {color: black;}')
   })
 
@@ -24,40 +25,32 @@ describe('props', () => {
     const Comp = styled('div', compProps)`
       color: ${props => props.fg || 'black'};
     `
-    const Ctor = Vue.extend(Comp)
-    const vm = new Ctor({
-      propsData: {
-        fg: 'red'
-      }
-    }).$mount()
+
+    const vm = createApp(Comp, { fg: 'red' }).mount('body')
     expectCSSMatches('.a {color: red;}')
   })
 
   it('should add any injected theme to the component', () => {
     const theme = {
-      blue: "blue",
+      blue: 'blue'
     }
 
     const Comp = styled.div`
       color: ${props => props.theme.blue};
     `
     const Themed = {
-      render: function(createElement) {
-        return createElement(
+      render: function () {
+        return h(
           ThemeProvider,
           {
-            props: {
-              theme,
-            },
+            theme
           },
-          [
-            createElement(Comp)
-          ]
+          [h(Comp)]
         )
       }
     }
 
-    const vm = new Vue(Themed).$mount()
+    const vm = createApp(Themed).mount('body')
     expectCSSMatches('.a {color: blue;}')
   })
 })

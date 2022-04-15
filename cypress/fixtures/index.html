@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Basic Example</title>
+    <style>
+      /* ensure we can add additional classes with no issue */
+      .additional-class {
+        padding: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Test Fixture</h1>
+    <div id="app"></div>
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+    <script src="/vue-styled-components.js"></script>
+    <script type="text/babel">
+      // Create an interoperable style
+      const FlexCentered = `
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    `
+
+      // Create a global style
+      styled.injectGlobal`
+        body {
+          background-color: rgb(254, 254, 254);
+          font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        *,
+        *::before,
+        *::after {
+          box-sizing: border-box;
+        }
+      `
+
+      const animation = styled.keyframes`
+        from {
+          transform: rotate(0deg);
+        }
+
+        to {
+          transform: rotate(360deg);
+        }
+      `
+
+      // Create a <CustomTitle> vue component that renders an <h2> which is
+      // centered, primary theme color, and sized at 1.5em
+      const CustomTitle = styled.default('h2', { animate: Boolean })`
+      font-size: 2em;
+      text-align: center;
+      color: ${props => props.theme.primary};
+      text-transform: uppercase;
+
+      @supports (-webkit-text-stroke: 1px) {
+        -webkit-text-stroke: 2px ${props => props.theme.primary};
+        color: transparent
+      }
+
+      ${props => props.animate && `animation: ${animation} 2s linear infinite;`}
+    `
+
+      const H2 = CustomTitle.withComponent('h2')
+
+      const MyComponent = {
+        props: ['visible'],
+        template: `<h1><slot /></h1>`
+      }
+
+      const SuperCustomTitle = styled.default(MyComponent, { color: String })`
+      color: ${props => props.color || 'red'};
+      opacity: ${props => (props.visible ? 1 : 0)};
+    `
+
+      // Create a <Wrapper> vue component that renders a <section> with
+      // some padding and a secondary theme color background
+      const Wrapper = styled.default.section`
+      ${FlexCentered};
+      padding: 4em;
+      background-color: ${props => props.theme.secondary};
+    `
+
+      const W2 = Wrapper.extend`
+        background-color: ${props => props.theme.tertiary};
+      `
+
+      // Custom Wrapper
+      const W3 = styled.default(Wrapper, {
+        color: String,
+        bg: String
+      })`
+      color: ${props => props.color};
+      background-color: ${props => props.bg};
+    `
+
+      const StyledInput = styled.default.input`
+      display: block;
+      width: 100%;
+      height: 60px;
+      border: solid 3px transparent;
+      padding: 0 0.6em;
+      font-size: 1em;
+      line-height: 1;
+
+      &:focus {
+        outline: none;
+        border: solid 3px ${props => props.theme.primary};
+      }
+    `
+
+      const ReadonlyStyledInput = styled
+        .default(StyledInput)
+        .attrs({ readOnly: true })`
+      color: ${props => props.theme.disabled};
+      border-color: ${props => props.theme.disabled};
+      font-family: ${props => props.noop};
+
+      &:focus {
+        border-color: ${props => props.theme.disabled};
+      }
+    `
+
+      const Btn = styled.default('button', { visible: Boolean })`
+      outline: none;
+      border: solid 3px transparent;
+      border-radius: 6em;
+      padding: 1em 2em;
+      color: #fff;
+      cursor: pointer;
+      margin: 1.5em 0;
+      background-color: ${props => props.theme.primary};
+      opacity: ${props => (props.visible ? 1 : 0)};
+      transition: all .3s ease-in;
+
+      &:focus-visible {
+        outline: none;
+        border: solid 3px ${props => props.theme.border};
+      }
+
+      &:hover {
+        filter: brightness(110%);
+      }
+    `
+
+      const SuperBtn = styled.default(Btn, { visible: Boolean, big: Boolean })`
+      font-size: ${props => (props.big ? 0.8 : 1)}em;
+    `
+
+      const CustomBtn = styled.default(Btn, {
+        color: String,
+        bg: String
+      })`
+      color: ${props => props.color};
+      background-color: ${props => props.bg};
+      &:focus-visible {
+        outline: none;
+        border: solid 3px ${props => props.color};
+      }
+    `
+
+      const Footer = styled.default.footer`
+      background-color: ${({ theme }) => theme.secondary};
+    `
+
+      const Header = styled.default.header.attrs({
+        'role': 'heading',
+        'aria-level': 3,
+        'data-testid': 'header'
+      })`
+      background-color: ${({ theme }) => theme.quaternary};
+      text-transform: uppercase;
+    `
+
+      const Header2 = styled.default(Header).attrs({
+        'data-testid': 'header-2'
+      })``
+
+      const CardContainer = styled
+        .default('div', {
+          testid: {
+            type: String,
+            default: 'default_id_from_styled'
+          },
+          shouldNotBindToDom: Number
+        })
+        .attrs(({ testid }) => ({
+          'id': 'attr-fallback-id',
+          'data-testid': `card-container-${testid}`
+        }))`
+          border: 2px solid black;
+          border-radius: 3px;
+          & > header, footer {
+            display: flex;
+            justify-content: center;
+          }
+        `
+
+      const Card = {
+        props: {
+          headerText: {
+            type: String,
+            default: 'This is the default header content'
+          },
+          footerText: {
+            type: String,
+            default: 'This is the default footer content'
+          },
+          testid: {
+            type: String,
+            default: 'default_id_from_setup_fn'
+          }
+        },
+
+        setup({ headerText, footerText, testid }, { slots }) {
+          return () =>
+            Vue.h(
+              CardContainer,
+              { testid, shouldNotBindToDom: 100, id: 'fallback-id' },
+              [
+                slots.header({ content: headerText }),
+                slots.default(),
+                slots.footer({ content: footerText })
+              ]
+            )
+        }
+      }
+
+      const CardContent = styled.default.div.attrs({
+        'id': 'card-content-id',
+        'data-testid': 'card-content-id'
+      })`
+      padding: 1rem;
+      ${FlexCentered}
+
+      & > p {
+        color: hotpink;
+        font-weight: 700;
+      }
+    `
+
+      const TestBtn = styled
+        .default('button', {
+          attr: {
+            type: Boolean
+          }
+        })
+        .attrs(({ attr }) => ({
+          'id': 100 + (attr ? 1 : 0),
+          'data-testid': 'test-btn'
+        }))``
+
+      const TestSlot = {
+        props: {
+          content: {
+            type: String
+          }
+        },
+        setup({ content }, { slots }) {
+          return () => Vue.h('div', [slots.header({ content })])
+        }
+      }
+
+      const app = Vue.createApp({
+        template: `
+      <theme-provider :theme="currentTheme">
+        <wrapper data-testid="wrapper-1">
+          <custom-title :visible="true" :animate="animated1" data-testid="test-input-display"> {{text1}} </custom-title>
+          <styled-input v-model="text1" data-testid="test-input" />
+          <btn visible @click="animated1 = !animated1"> A Styled Button </btn>
+        </wrapper>
+        <w-2 data-testid="wrapper-2">
+          <h-2 :animate="animated2"> {{text2}} </h-2>
+          <readonly-styled-input v-model="text2" data-testid="readonly-input" />
+          <super-btn visible @click="animated2 = !animated2"> An extension of Styled Button </super-btn>
+        </w-2>
+        <w-3
+          data-testid="wrapper-3"
+          :bg="currentTheme.quaternary"
+        >
+          <custom-title :visible="true">Change Rendered Elements with "as" prop.</custom-title>
+          <h3>Enter any HTML element and press the Enter key to see the element rendered by the styled component change 👇🏽</h3>
+          <styled-input @keydown.enter="updateElement" placeholder="Enter an HTML element! Like 'button' or 'section'" v-model="elementModel" data-testid="custom-btn-ctrl" />
+          <custom-btn
+            visible
+            :as="setElement"
+            role="button"
+            tabindex="0"
+            color="#42a786"
+            :bg="isDarkMode ? 'black' : 'white'"
+            :aria-label="setElementLabel"
+            data-testid="custom-btn"
+            @keydown.space="updateElement"
+          >
+            I am the "btn" component rendered as a "{{ setElement }}" using the \`as\` prop! 🎉
+          </custom-btn>
+        </w-3>
+
+        <w-3
+          :bg="currentTheme.quinary"
+        >
+          <custom-title :visible="true">Toggle the theme. It's reactive!</custom-title>
+           <btn
+            visible
+            role="button"
+            tabindex="0"
+            color="#42a786"
+            bg="papayawhip"
+            aria-label="Toggle the theme"
+            @keydown.space="toggleTheme"
+            @click="toggleTheme"
+            data-testid="toggle-btn"
+          >
+          Toggle theme 💅
+          </btn>
+        </w-3>
+
+        <w-3 :bg="currentTheme.senary">
+          <custom-title :visible="true">Use slots with Styled Components</custom-title>
+          <h3>Styled components may also be used with slots 👇🏽</h3>
+          <card id="card-id" header-text="styled header slot" footer-text="styled footer slot" testid="id_from_template" >
+            <template #header="{ content }">
+              <styled-header style="padding: 1rem">
+                {{ content }}
+              </styled-header>
+            </template>
+            <template #default>
+              <card-content>
+                <p>Default slot content</p>
+              </card-content>
+            </template>
+            <template #footer="{ content }">
+              <styled-footer data-testid="footer" class="additional-class">
+                {{ content.toUpperCase() }}
+              </styled-footer>
+            </template>
+          </card>
+        </w-3>
+
+        <w-3>
+          <test-btn @click="attr = !attr" :attr="attr" />
+           <test-slot content="test text" data-testid="test-slot">
+            <template #header="{ content }">
+              <test-header>
+                {{ content }}
+              </test-header>
+            </template>
+
+            <template #footer="{ content }">
+              <styled-footer data-testid="footer" class="additional-class">
+                {{ content }}
+              </styled-footer>
+            </template>
+          </test-slot>
+        </w-3>
+      </theme-provider>`,
+        components: {
+          CustomTitle,
+          Wrapper,
+          W2,
+          W3,
+          H2,
+          Btn,
+          TestBtn,
+          SuperBtn,
+          CustomBtn,
+          SuperCustomTitle,
+          StyledInput,
+          ReadonlyStyledInput,
+          Card,
+          CardContent,
+          StyledHeader: Header,
+          StyledFooter: Footer,
+          TestHeader: Header2,
+          TestSlot,
+          ThemeProvider: styled.ThemeProvider
+        },
+        data: () => ({
+          text1: 'Hello World, this is my first styled component!',
+          text2:
+            'Hello World, this is my first styled component, I am readonly using .attrs function!',
+          animated1: false,
+          animated2: false,
+          elementModel: 'div',
+          mutableElement: 'div',
+          isDarkMode: false,
+          attr: false,
+          theme: {
+            light: {
+              primary: 'palevioletred',
+              secondary: 'rgb(215, 242, 255)',
+              tertiary: 'rgb(255 240 245)',
+              quaternary: 'rgb(198, 247, 230)',
+              quinary: 'papayawhip',
+              senary: '#cdcacc',
+              border: '#f51d8a',
+              disabled: 'gainsboro'
+            },
+            dark: {
+              primary: 'palevioletred',
+              secondary: 'rgb(109, 70, 42)',
+              tertiary: 'rgb(38, 84, 138)',
+              quaternary: 'rgb(144, 4, 33)',
+              quinary: '#ffa50f',
+              senary: '#5f6851',
+              border: '#f51d8a',
+              disabled: 'gainsboro'
+            }
+          }
+        }),
+        computed: {
+          setElement() {
+            return this.mutableElement || 'div'
+          },
+          setElementLabel() {
+            return `Btn rendered as ${this.setElement}`
+          },
+          currentTheme() {
+            return this.isDarkMode ? this.theme.dark : this.theme.light
+          }
+        },
+
+        methods: {
+          updateElement() {
+            this.mutableElement = this.elementModel
+          },
+          toggleTheme() {
+            this.isDarkMode = !this.isDarkMode
+          }
+        }
+      }).mount('#app')
+    </script>
+  </body>
+</html>

@@ -2,9 +2,11 @@
 
 > Visual primitives for the component age. Use the best bits of ES6 and CSS to style your apps without stress 💅
 
+**Note: This is a work-in-progress fork of Lorenzo Girardi's `vue-styled-components` with target support for Vue 3.**
+
 ## Support
 
-> This version is compatible with Vue 2.x
+> This version is compatible with Vue 3.x
 
 ```
 yarn add vue-styled-components
@@ -16,22 +18,9 @@ Utilising tagged template literals (a recent addition to JavaScript) and the pow
 
 ## Usage
 
-> Register first your component locally (see https://vuejs.org/v2/guide/components.html#Local-Registration)
-
-```
-  new Vue({
-    // ...
-    components {
-      'styled-title': StyledTitle
-    },
-    template: '<styled-title> Hello! </styled-title>'
-  }
-```
-
 ### Basic
 
 > Do not use built-in or reserved HTML elements as component id (title, button, input...).
-
 
 This creates two Vue components, `<StyledTitle>` and `<Wrapper>`:
 
@@ -91,13 +80,14 @@ You can just pass a `placeholder` prop into the `styled-component`. It will pass
 // Render a styled input with a placeholder of "@liqueflies"
 <styled-input placeholder="@liqueflies" type="text" />
 ```
+
 ### Adapting based on props
 
 This is a button component that has a `primary` state. By setting `primary` to `true` when rendering it we adjust the background and text color.
 
 ### Important
 
-> A prop is a custom attribute for passing information from parent components. A child component needs to explicitly declare the props it expects to receive using the props option, you must define your prop before, and of course, get benefits of validation! (see https://vuejs.org/v2/guide/components.html#Passing-Data-with-Props)
+> A prop is a custom attribute for passing information from parent components. A child component needs to explicitly declare the props it expects to receive using the props option, you must define your prop before, and of course, get benefits of validation! (see https://vuejs.org/guide/components/props.html#props)
 
 ```
 {
@@ -160,7 +150,7 @@ Remember to register `ThemeProvider` locally.
 ```JSX
   import {ThemeProvider} from 'vue-styled-components'
 
-  new Vue({
+  createApp({
     // ...
     components: {
       'theme-provider': ThemeProvider

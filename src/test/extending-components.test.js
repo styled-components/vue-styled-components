@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
 import expect from 'expect'
 
 import { resetStyled, expectCSSMatches } from './utils'
@@ -6,139 +6,162 @@ import { resetStyled, expectCSSMatches } from './utils'
 let styled
 
 describe('extending components', () => {
-  /**
-   * Make sure the setup is the same for every test
-   */
-  beforeEach(() => {
-    styled = resetStyled()
-  })
+	/**
+	 * Make sure the setup is the same for every test
+	 */
+	beforeEach(() => {
+		styled = resetStyled()
+	})
 
-/*
+	/*
   it('should generate a single class with no styles', () => {
     const Parent = styled.div``
     const Child = styled(Parent)``
 
-    const p = new Vue(Parent).$mount()
-    const c = new Vue(Child).$mount()
+    const p = createApp(Parent).mount('body')
+    const c = createApp(Child).mount('body')
 
     expectCSSMatches('.a {}')
   })
 */
 
-  it('should generate a single class if only parent has styles', () => {
-    const Parent = styled.div`color: blue;`
-    const Child = styled(Parent)``
+	it('should generate a single class if only parent has styles', () => {
+		const Parent = styled.div`
+			color: blue;
+		`
 
-    const p = new Vue(Parent).$mount()
-    const c = new Vue(Child).$mount()
+		const Child = styled(Parent)``
 
-    expectCSSMatches('.a {color: blue;}')
-  })
+		const p = createApp(Parent).mount('body')
+		const c = createApp(Child).mount('body')
 
-  it('should generate a single class if only child has styles', () => {
-    const Parent = styled.div`color: blue;`
-    const Child = styled(Parent)``
+		expectCSSMatches('.a {color: blue;}')
+	})
 
-    const p = new Vue(Parent).$mount()
-    const c = new Vue(Child).$mount()
+	it('should generate a single class if only child has styles', () => {
+		const Parent = styled.div`
+			color: blue;
+		`
+		const Child = styled(Parent)``
 
-    expectCSSMatches('.a {color: blue;}')
-  })
+		const p = createApp(Parent).mount('body')
+		const c = createApp(Child).mount('body')
 
-  it('should generate a new class for the child with the added rules', () => {
-    const Parent = styled.div`background-color: blue;`
-    const Child = styled(Parent)`color: red;`
+		expectCSSMatches('.a {color: blue;}')
+	})
 
-    const p = new Vue(Parent).$mount()
-    const c = new Vue(Child).$mount()
+	it('should generate a new class for the child with the added rules', () => {
+		const Parent = styled.div`
+			background-color: blue;
+		`
+		const Child = styled(Parent)`
+			color: red;
+		`
 
-    expectCSSMatches('.a {background-color: blue;} .b {color: red;}')
-  })
+		const p = createApp(Parent).mount('body')
+		const c = createApp(Child).mount('body')
 
-  it('should generate different classes for both parent and child', () => {
-    const Parent = styled.div`color: blue;`
-    const Child = styled(Parent)`color: red;`
+		expectCSSMatches('.a {background-color: blue;} .b {color: red;}')
+	})
 
-    const p = new Vue(Parent).$mount()
-    const c = new Vue(Child).$mount()
+	it('should generate different classes for both parent and child', () => {
+		const Parent = styled.div`
+			color: blue;
+		`
+		const Child = styled(Parent)`
+			color: red;
+		`
 
-    expectCSSMatches('.a {color: blue;} .b {color: red;}')
-  })
+		const p = createApp(Parent).mount('body')
+		const c = createApp(Child).mount('body')
 
-  it('should keep nested rules to the child', () => {
-    const Parent = styled.div`
-      color: blue;
-      > h1 { font-size: 4rem; }
-    `
-    const Child = styled(Parent)`color: red;`
+		expectCSSMatches('.a {color: blue;} .b {color: red;}')
+	})
 
-    const p = new Vue(Parent).$mount()
-    const c = new Vue(Child).$mount()
+	it('should keep nested rules to the child', () => {
+		const Parent = styled.div`
+			color: blue;
+			> h1 {
+				font-size: 4rem;
+			}
+		`
+		const Child = styled(Parent)`
+			color: red;
+		`
 
-    expectCSSMatches('.a {color: blue;}.a > h1 {font-size: 4rem;} .b {color: red;}')
-  })
+		const p = createApp(Parent).mount('body')
+		const c = createApp(Child).mount('body')
 
-  it('should keep default props from parent', () => {
-    const parentProps = {
-      color: {
-        type: String,
-        default: 'red'
-      }
-    }
+		expectCSSMatches(
+			'.a {color: blue;}.a > h1 {font-size: 4rem;} .b {color: red;}'
+		)
+	})
 
-    const Parent = styled('div', parentProps)`
-      color: ${(props) => props.color};
-    `
+	it('should keep default props from parent', () => {
+		const parentProps = {
+			color: {
+				type: String,
+				default: 'red'
+			}
+		}
 
-    const Child = styled(Parent)`background-color: green;`
+		const Parent = styled('div', parentProps)`
+			color: ${props => props.color};
+		`
 
-    const p = new Vue(Parent).$mount()
-    const c = new Vue(Child).$mount()
+		const Child = styled(Parent)`
+			background-color: green;
+		`
 
-    expectCSSMatches(`
+		const p = createApp(Parent).mount('body')
+		const c = createApp(Child).mount('body')
+
+		expectCSSMatches(`
       .a {color: red;}
       .b {background-color: green;}
     `)
-  })
+	})
 
-  it('should keep prop types from parent', () => {
-    const parentProps = {
-      color: {
-        type: String
-      }
-    }
+	it('should keep prop types from parent', () => {
+		const parentProps = {
+			color: {
+				type: String
+			}
+		}
 
-    const Parent = styled.div`
-      color: ${(props) => props.color};
-    `
+		const Parent = styled.div`
+			color: ${props => props.color};
+		`
 
-    const Child = styled(Parent)`background-color: green;`
+		const Child = styled(Parent)`
+			background-color: green;
+		`
 
-    const c = new Vue(Child).$mount()
-    const p = new Vue(Parent).$mount()
+		const c = createApp(Child).mount('body')
+		const p = createApp(Parent).mount('body')
 
-    expect(c.$props).toEqual(p.$props)
-  })
+		expect(c.$props).toEqual(p.$props)
+	})
 
-  // it('should keep custom static member from parent', () => {
-  //   const Parent = styled.div`color: red;`
+	// it('should keep custom static member from parent', () => {
+	//   const Parent = styled.div`color: red;`
 
-  //   Parent.fetchData = () => 1
+	//   Parent.fetchData = () => 1
 
-  //   const Child = styled(Parent)`color: green;`
+	//   const Child = styled(Parent)`color: green;`
 
-  //   expect(Child.fetchData).toExist()
-  //   expect(Child.fetchData()).toEqual(1)
-  // })
+	//   expect(Child.fetchData).toExist()
+	//   expect(Child.fetchData()).toEqual(1)
+	// })
 
-  // it('should keep static member in triple inheritance', () => {
-  //   const GrandParent = styled.div`color: red;`
-  //   GrandParent.fetchData = () => 1
+	// it('should keep static member in triple inheritance', () => {
+	//   const GrandParent = styled.div`color: red;`
+	//   GrandParent.fetchData = () => 1
 
-  //   const Parent = styled(GrandParent)`color: red;`
-  //   const Child = styled(Parent)`color:red;`
+	//   const Parent = styled(GrandParent)`color: red;`
+	//   const Child = styled(Parent)`color:red;`
 
-  //   expect(Child.fetchData).toExist()
-  //   expect(Child.fetchData()).toEqual(1)
-  // })
+	//   expect(Child.fetchData).toExist()
+	//   expect(Child.fetchData()).toEqual(1)
+	// })
 })

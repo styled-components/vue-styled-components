@@ -1,51 +1,49 @@
-import Vue from 'vue'
+import { createApp, h } from 'vue'
 import expect from 'expect'
 import { resetStyled, expectCSSMatches } from './utils'
 
 let styled
 
 describe('"as" polymorphic prop', () => {
-  beforeEach(() => {
-    styled = resetStyled()
-  })
+	beforeEach(() => {
+		styled = resetStyled()
+	})
 
-  it('should render "as" polymorphic prop element', () => {
-    const Base = styled.div`
-      color: blue;
-    `
-    const b = new Vue({
-      render: (h) => h(Base, {
-        props: {
-          as: 'button'
-        }
-      })
-    }).$mount()
-    expect(b.$el.tagName.toLowerCase()).toEqual('button')
-  })
+	it('should render "as" polymorphic prop element', () => {
+		const Base = styled.div`
+			color: blue;
+		`
 
+		const b = createApp({
+			render: () =>
+				h(Base, {
+					as: 'button'
+				})
+		}).mount('body')
+		expect(b.$el.tagName.toLowerCase()).toEqual('button')
+	})
 
-  it('should append base class to new components composing lower level styled components', () => {
-    const Base = styled.div`
-      color: blue;
-    `
-    const Composed = styled(Base, {
-      bg: String,
-    })`
-      background: ${props => props.bg};
-    `
+	it('should append base class to new components composing lower level styled components', () => {
+		const Base = styled.div`
+			color: blue;
+		`
+		const Composed = styled(Base, {
+			bg: String
+		})`
+			background: ${props => props.bg};
+		`
 
-    const b = new Vue(Base).$mount()
-    const c = new Vue({
-      render: (h) => h(Composed, {
-        props: {
-          bg: 'yellow',
-          as: 'dialog'
-        }
-      })
-    }).$mount()
+		const b = createApp(Base).mount('body')
+		const c = createApp({
+			render: () =>
+				h(Composed, {
+					bg: 'yellow',
+					as: 'dialog'
+				})
+		}).mount('body')
 
-    expect(c.$el.tagName.toLowerCase()).toEqual('dialog')
-    expect(c.$el._prevClass.includes(b.$el._prevClass)).toBeTruthy()
-    expectCSSMatches('.a{color: blue;} .b{background:yellow;}')
-  })
+		expect(c.$el.tagName.toLowerCase()).toEqual('dialog')
+		expect(c.$el.classList.contains(b.$el.classList.toString())).toBeTruthy()
+		expectCSSMatches('.a{color: blue;} .b{background:yellow;}')
+	})
 })

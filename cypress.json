@@ -1,0 +1,14 @@
+{
+  "baseUrl": "http://localhost:3000",
+  "integrationFolder": "cypress/integration",
+  "fixturesFolder": "cypress/fixtures",
+	"pluginsFile": "cypress/plugins",
+	"supportFile": "cypress/support",
+	"chromeWebSecurity": false,
+	"video": false,
+	"screenshotOnRunFailure": false,
+	"retries": 2,
+	"defaultCommandTimeout": 10000,
+  "viewportWidth": 1000,
+  "viewportHeight": 1050
+}
